@@ -1,19 +1,15 @@
 package org.fordyce.mrblabby.service;
 
 import java.sql.Connection;
-
-import java.sql.DriverManager;
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.naming.Context;
+import javax.annotation.Resource;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.sql.DataSource;
 
-import com.mysql.jdbc.Driver;
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
+@Resource(name="jdbc/mr_blabby", type=javax.sql.DataSource.class)
 public class DatabaseConnector {
 	private DataSource ds;
 	private Connection connect;
@@ -67,7 +63,6 @@ public class DatabaseConnector {
 
 			statement.execute(command);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			System.err.println("Error while executing SQL statement");
 			e.printStackTrace();
 		}
