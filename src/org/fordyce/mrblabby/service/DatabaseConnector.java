@@ -21,12 +21,12 @@ public class DatabaseConnector {
 	 */
 	public DatabaseConnector()
 	{
-		try {
+		/*try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e1) {
 			System.err.println("Error loading MySQL Driver");
 			e1.printStackTrace();
-		}
+		}*/
 		
 		String dbname = "jdbc/mr_blabby";
 		
@@ -55,7 +55,7 @@ public class DatabaseConnector {
 	 * Connects to the database and issues the command
 	 * @param command which is executed by the database
 	 */
-	public void execute(String command) {
+	public boolean execute(String command) {
 
 		try { 
 			connect = getConnection();
@@ -65,6 +65,8 @@ public class DatabaseConnector {
 		} catch (SQLException e) {
 			System.err.println("Error while executing SQL statement");
 			e.printStackTrace();
+			return false;
 		}
+		return true;
 	}
 }
