@@ -1,7 +1,41 @@
 @CHARSET "ISO-8859-1";
 
-html { /*background-image: url("bg.bmp");*/
+html {
+	background-image: url("bg.bmp");
 	font-family: helvetic, verdana, arial, sans-serif;
+}
+
+body {
+	margin: 0;
+}
+
+.nav {
+	margin: 0;
+	background-image: linear-gradient(#f9f9f9, #f3f3f3);
+	background-repeat: repeat-x;
+	position: relative;
+	border-bottom: 2px solid #e5e5e5;
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+	height: 35px;
+}
+
+.nav li {
+	float: left;
+	list-style-type: none;
+}
+
+.nav a {
+	margin-top: 8px;
+	padding-left: 100px;
+	width:200px;
+	display: block;
+	color: #333333;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.nav a:hover {
+	color: #4183c4;
 }
 
 div.container {
@@ -13,7 +47,7 @@ div.register {
 	width: 410px;
 	margin: 50px auto;
 	padding: 25px;
-	background-color: rgba(250, 250, 250, 0.5);
+	background-color: rgba(250, 250, 250, 0.2);
 	border-radius: 5px;
 	box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.2), inset 0px 1px 0px 0px
 		rgba(250, 250, 250, 0.5);
@@ -27,13 +61,13 @@ div.register {
 	font-size: 15px;
 }
 
-label {
+.register label {
 	width: 75%;
 	display: block;
 	margin: 0 auto;
 }
 
-input {
+.register input {
 	display: block;
 	margin: 0 auto;
 	border: 1px solid #ccc;
@@ -46,14 +80,14 @@ input {
 
 input:FOCUS {
 	border-color: #56b4ef;
-	box-shadow: 0 0 4px	rgba(82, 168, 236, .6)
+	box-shadow: 0 0 4px rgba(82, 168, 236, .6)
 }
 
 input[type="submit"] {
-	background-color: #2daebf;
+	background-image: linear-gradient(#5ba1c2, #2daebf);
 	color: black;
 	font-weight: bold;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
-	border-radius: 2px;
+	border-radius: 4px;
 	width: 50%;
 }

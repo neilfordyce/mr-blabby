@@ -2,12 +2,15 @@ package org.fordyce.mrblabby.service;
 
 import java.sql.Connection;
 import javax.sql.DataSource;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 
 import javax.annotation.Resource;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+
 
 @Resource(name="jdbc/mr_blabby", type=javax.sql.DataSource.class)
 public class DatabaseConnector {
@@ -56,17 +59,25 @@ public class DatabaseConnector {
 	 * @param command which is executed by the database
 	 */
 	public boolean execute(String command) {
-
 		try { 
 			connect = getConnection();
 			statement = connect.createStatement();
-
+			connect.prepareStatement("email_exists");
 			statement.execute(command);
 		} catch (SQLException e) {
 			System.err.println("Error while executing SQL statement");
 			e.printStackTrace();
 			return false;
+		} finally{
+			try {
+				connect.close();
+			} catch (SQLException e) {
+				System.err.println("Error closing database connection");
+				e.printStackTrace();
+			}
 		}
 		return true;
 	}
+	
+
 }

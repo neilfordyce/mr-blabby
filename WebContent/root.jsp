@@ -16,7 +16,7 @@
 	<h1>
 		Current Time:
 		<%= df.format(new java.util.Date())%>
-	</h1>	
+	</h1>
 
 </body>
 </html>

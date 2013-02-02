@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.fordyce.mrblabby.exception.PasswordMismatchException;
+import org.fordyce.mrblabby.exception.EmailExistsException;
 import org.fordyce.mrblabby.service.RegisterService;
 
 /**
@@ -37,18 +37,17 @@ public class RegisterServlet extends HttpServlet {
 		//Get information from form
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String confirmPassword = request.getParameter("confirmPassword");
 		String firstname = request.getParameter("firstname");
 		String lastname = request.getParameter("lastname");
 		
 		//Pass the info to the register service
 		RegisterService register = new RegisterService();
 		try {
-			register.registerUser(firstname, lastname, email, password, confirmPassword);
-		} catch (PasswordMismatchException e) {
+			register.registerUser(firstname, lastname, email, password);
+		} catch (EmailExistsException e) {
 			e.printStackTrace();
-			request.getRequestDispatcher("/register.jsp").forward(request, response);
-			
+			request.setAttribute("email", email);
+			request.getRequestDispatcher("/emailExists.jsp").forward(request, response);
 			return;
 		}
 		
