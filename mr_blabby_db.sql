@@ -1,0 +1,1 @@
+INSERT INTO `mr_blabby`.`user` (`email`, `password`) VALUES ('nj', 'nkn');

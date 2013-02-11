@@ -11,7 +11,7 @@
 		<jsp:include page="nav.jsp"/>
 		    <div class="container">
 		    <h1>Register</h1>
-		    <div class="register">
+		    <div class="glass">
 			<form action="register" method="post">
 				<label for="firstname">First name</label>
 				<input type="text" name="firstname" placeholder="firstname" value="${param.firstname}" required autofocus="autofocus">
@@ -27,7 +27,6 @@
 				<br>
 				<label for="confirmPassword">Confirm password</label>
 				<input type="password" name="confirmPassword" placeholder="retype password" required id="confirmPassword" onkeyup="checkPass();">
-				<div id="passwordError"></div>
 				<br>
 				<input type="submit" name="register" value="Register" id="register">
 			</form>

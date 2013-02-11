@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context>
-
-    <Resource
-        name="jdbc/mr_blabby"
-        driverClassName="com.mysql.jdbc.Driver"
-        maxActive="100"
-        maxIdle="30"
-        maxWait="10000"
-        password="mini"
-        type="javax.sql.DataSource"
-        url="jdbc:mysql://localhost:3306/mr_blabby"
-        username="root" />
-
+<Context path="/MrBlabby">
+  <Resource driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/mr_blabby" password="mini" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/mr_blabby" username="root"/>
 </Context>

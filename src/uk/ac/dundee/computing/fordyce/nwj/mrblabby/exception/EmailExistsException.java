@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.fordyce.mrblabby.exception;
+package uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception;
 
 /**
  * @author Neil

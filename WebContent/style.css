@@ -1,8 +1,11 @@
 @CHARSET "ISO-8859-1";
 
 html {
-	background-image: url("bg.bmp");
+	background-image: url("bg.png");
 	font-family: helvetic, verdana, arial, sans-serif;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        background-color: #C0DEED;
 }
 
 body {
@@ -43,7 +46,7 @@ div.container {
 	margin: 0 auto;
 }
 
-div.register {
+div.glass {
 	width: 410px;
 	margin: 50px auto;
 	padding: 25px;
@@ -54,20 +57,20 @@ div.register {
 	border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.register {
+.glass {
 	width: 210px;
 	color: #999;
 	font-weight: bold;
 	font-size: 15px;
 }
 
-.register label {
+.glass label {
 	width: 75%;
 	display: block;
 	margin: 0 auto;
 }
 
-.register input {
+.glass input {
 	display: block;
 	margin: 0 auto;
 	border: 1px solid #ccc;
