@@ -9,11 +9,14 @@
 
 <html>
     <head>
+        <jsp:include page="style.jsp"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Profile</title>
     </head>
     <body>
         <h1>Profile</h1>
         ${user.email}
+        ${user.lastname}
+        ${user.firstname}
     </body>
 </html>

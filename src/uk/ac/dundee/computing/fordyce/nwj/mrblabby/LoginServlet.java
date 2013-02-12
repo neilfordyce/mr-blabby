@@ -1,6 +1,10 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.security.auth.login.LoginException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -15,6 +19,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.LoginService;
  */
 @WebServlet(urlPatterns = {"/login", "/login/*"})
 public class LoginServlet extends HttpServlet {
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -26,7 +31,7 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("login.jsp").forward(request, response);
+        request.getRequestDispatcher("/login.jsp").forward(request, response);
     }
 
     /**
@@ -41,19 +46,21 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        //Get information from form
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        
-        LoginService login = new LoginService();
-        if(login.authenticate(email, password)) {
-            User user = new User();
-            user.setEmail(email);
-            request.getSession().setAttribute("user", user);
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
-        }
-        else {
-            doGet(request, response);
-        }
+            //Get information from form
+            String email = request.getParameter("email");
+            String password = request.getParameter("password");
+
+            LoginService login = new LoginService();
+
+            try {
+                User user = login.getUser(email, password);
+
+                request.getSession().setAttribute("user", user);
+                request.getRequestDispatcher("profile.jsp").forward(request, response);
+                
+            } catch (LoginException | SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+                doGet(request, response);
+            }
     }
 }
