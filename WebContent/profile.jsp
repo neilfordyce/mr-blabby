@@ -6,7 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html>
     <head>
         <jsp:include page="style.jsp"/>
@@ -14,9 +13,17 @@
         <title>Profile</title>
     </head>
     <body>
-        <h1>Profile</h1>
-        ${user.email}
-        ${user.lastname}
-        ${user.firstname}
+        <jsp:include page="nav.jsp"/>
+        <div class="container">
+            <h1>Profile</h1>
+            ${user.email}
+            ${user.lastname}
+            ${user.firstname}
+            
+            <form action="message" method="post">
+                <input type="text" name="message" placeholder="w'azzzzzup..." required/>
+                <input type="submit" name="submit" value="Post"/>
+            </form>
+        </div>
     </body>
 </html>

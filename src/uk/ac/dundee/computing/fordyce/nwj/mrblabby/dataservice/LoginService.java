@@ -56,7 +56,7 @@ public class LoginService extends DatabaseConnector {
         
         connect = getConnection();
         
-        CallableStatement proc = connect.prepareCall("{call getNames(?, ?, ?, ?)}");
+        CallableStatement proc = connect.prepareCall("{call get_names(?, ?, ?, ?)}");
         proc.setString(1, email);
         proc.setString(2, password);
         proc.registerOutParameter(3, java.sql.Types.VARCHAR);

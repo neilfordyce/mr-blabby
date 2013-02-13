@@ -1,25 +1,25 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.security.auth.login.LoginException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.JSpinner;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
-import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.LoginService;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.MessageService;
 
 /**
  *
  * @author Neil
  */
-@WebServlet(urlPatterns = {"/login", "/login/*"})
-public class LoginServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/message", "/message/*"})
+public class MessageServlet extends HttpServlet {
 
     /**
      * Handles the HTTP
@@ -32,9 +32,14 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+        if((User)request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("/MrBlabby/login");
+        }
+        else {
+            request.getRequestDispatcher("/profile.jsp").forward(request, response);
+        }
     }
-
+    
     /**
      * Handles the HTTP
      * <code>POST</code> method.
@@ -46,21 +51,8 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-            //Get information from form
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
-
-            LoginService login = new LoginService();
-
-            try {
-                User user = login.getUser(email, password);
-                request.getSession().setAttribute("user", user);
-                response.sendRedirect("/MrBlabby/profile");
-                
-            } catch (LoginException | SQLException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-                doGet(request, response);
-            }
+        MessageService ms = new MessageService();
+        ms.createMessage((User)request.getSession().getAttribute("user"), request.getParameter("message"));
+        doGet(request, response);
     }
 }

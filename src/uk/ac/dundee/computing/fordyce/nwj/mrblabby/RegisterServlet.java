@@ -14,16 +14,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.EmailExistsExceptio
  */
 @WebServlet(urlPatterns = {"/register", "/register/*"})
 public class RegisterServlet extends HttpServlet {
-
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RegisterServlet() {
-        super();
-    }
-
+    
     /*
      * Show the register.jsp page
      */
@@ -49,14 +40,13 @@ public class RegisterServlet extends HttpServlet {
         RegisterService register = new RegisterService();
         try {
             register.registerUser(firstname, lastname, email, password);
+            //Forward to success page
+            request.setAttribute("name", firstname);
+            request.getRequestDispatcher("/registerSuccess.jsp").forward(request, response);
+            
         } catch (EmailExistsException e) {
             request.setAttribute("email", email);
             request.getRequestDispatcher("/emailExists.jsp").forward(request, response);
-            return;
         }
-
-        //Forward to success page
-        request.setAttribute("name", firstname);
-        request.getRequestDispatcher("/registerSuccess.jsp").forward(request, response);
     }
 }
