@@ -35,6 +35,7 @@ public class MessageServlet extends HttpServlet {
         //System.out.println(request.getPathTranslated());
         //System.out.println(request.getPathInfo().startsWith("/create"));
 
+        //Login check
         if ((User) request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/MrBlabby/login");
         } else {
@@ -50,13 +51,12 @@ public class MessageServlet extends HttpServlet {
             
             request.setAttribute("messageList", messageList);
             
-            if(messageListIndex == null)
+            if(messageListIndex == null) {
                 request.getRequestDispatcher("/messageList.jsp").forward(request, response);
+            }
             else{
-                //request.getRequestDispatcher("/messageList.jsp").include(request, response);
                 request.getRequestDispatcher("/messageFragment.jsp").forward(request, response);
             }
-            //request.getRequestDispatcher("/profile.jsp").forward(request, response);
         }
     }
 
