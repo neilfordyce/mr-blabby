@@ -138,9 +138,10 @@ public class MessageService extends DatabaseConnector {
             querySize++;
             startMessage--;
         }
+        
         //Create message beans and add them to a message list bean
         MessageList messageList = new MessageList();
-        while(rs.next() && maxMessages > 0){
+        while(rs.next() && maxMessages >= 0){
             querySize++;
             Message message = new Message(rs.getString("message"),
                                             rs.getString("email"),
@@ -149,6 +150,7 @@ public class MessageService extends DatabaseConnector {
             maxMessages--;
         }
         
+        //Count the remaining records so the bean knows how many it's missing
         while(rs.next()){querySize++;}
         messageList.setQuerySize(querySize);
         

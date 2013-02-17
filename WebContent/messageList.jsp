@@ -10,7 +10,7 @@
     <head>
         <jsp:include page="style.jsp"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-         <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
         <title>Profile</title>
     </head>
     <body>
@@ -22,45 +22,35 @@
 
             </div>
         </div>
-        
+
         <script>
             $(document).ready(function(){
-            var requestCount = 0;
-            //$(window).scroll(function(){
-            $(window).scroll(function(){
-            //$("button").click(function(){
-            if  ( ($(document).height() - $(window).height()) - $(window).scrollTop() < 1000 ){
-            if(${messageList.querySize} > requestCount){
-            requestCount += ${messageList.size};
-            var dataRequestObject={messageListIndex:requestCount};
-            
-            var dataRequestHeader={messageListIndex:requestCount};
-            $.ajax({
-                url:'http://localhost:8080/MrBlabby/message/',
-                cache:false,
-                header:dataRequestHeader,
-                data:dataRequestObject,
-                success:function(){ alert("Request Done" + requestCount);},
-                error:function(xhr, ajaxOptions){
-                    alert(xhr.status + " :: " + xhr.statusText);
-                } 
-            }).done(function( html ) {
-                    $("#messages").append(html);
-            });
-            }
-            }
-                //if  ( ($(document).height() - $(window).height()) - $(window).scrollTop() < 1000 ){
-            //do stuff
-            
-           /* $("#dav").load("/MrBlabby/message/", function(response, status, xhr) {
-                        if (status == "error") {
-                            var msg = "Sorry but there was an error: ";
-                            $("#error").html(msg + xhr.status + " " + xhr.statusText);
-                        }
-                    });
-                });*/
+                var requestCount = 0;
 
-            });
+                $(window).scroll(function(){  //when scrolling
+
+                    //When near the bottom of the page
+                    if  (($(document).height() - $(window).height()) - $(window).scrollTop() < 1000 ){
+                        
+                        requestCount += ${messageList.size};  //Get next batch of messages
+                        
+                        //Only make the request if there are more messages to get
+                        if(${messageList.querySize} > requestCount){
+                            var dataRequestObject = {messageListIndex:requestCount};
+                            
+                            $.ajax({
+                                url:'http://localhost:8080/MrBlabby/message/',
+                                cache:false,
+                                data:dataRequestObject,
+                                error:function(xhr, ajaxOptions){
+                                    alert(xhr.status + " :: " + xhr.statusText);
+                                } 
+                            }).done(function( html ) {
+                                $("#messages").append(html);
+                            });
+                        }
+                    }
+                });
             });
         </script>
     </body>
