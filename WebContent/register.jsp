@@ -1,10 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-         pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <jsp:include page="style.jsp"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Register</title>
     </head>
     <body>
@@ -14,13 +15,13 @@
             <div class="glass">
                 <form action="register" method="post">
                     <label for="firstname">First name</label>
-                    <input type="text" name="firstname" placeholder="firstname" value="${param.firstname}" required autofocus="autofocus"/>
+                    <input type="text" name="firstname" placeholder="firstname" value="<c:out value="${param.firstname}"/>" required autofocus="autofocus"/>
                     <br>
                     <label for="lastname">Last name</label>
-                    <input type="text" name="lastname" placeholder="lastname" value="${param.lastname}" required/>
+                    <input type="text" name="lastname" placeholder="lastname" value="<c:out value="${param.lastname}"/>" required/>
                     <br>
                     <label for="email">Email</label>
-                    <input type="email" name="email" placeholder="email address" value="${param.email}" required/>
+                    <input type="email" name="email" placeholder="email address" value="<c:out value="${param.email}"/>" required/>
                     <br>
                     <label for="password">Password</label>
                     <input type="password" name="password" placeholder="password" required id="password" onkeyup="checkPass();"/>
@@ -32,24 +33,26 @@
                 </form>
             </div>
         </div>
+
+        <script type="text/javascript">
+            /*
+             * Checks password and confirm password match
+             * If they don't a custom HTML5 validation box appears on submission
+             */
+            function checkPass(){
+                var password = document.getElementById("password").value;
+                var confirmPassword = document.getElementById("confirmPassword").value;
+			
+                if( password != confirmPassword && confirmPassword != ""){
+                    document.getElementById("confirmPassword").setCustomValidity("Passwords do not match");
+                }
+                else{
+                    document.getElementById("confirmPassword").setCustomValidity("");
+                }
+		    
+            }
+        </script>         
     </body>
 
-    <script type="text/javascript">
-        /*
-         * Checks password and confirm password match
-         * If they don't a custom HTML5 validation box appears on submission
-         */
-        function checkPass(){
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirmPassword").value;
-			
-            if( password != confirmPassword && confirmPassword != ""){
-                document.getElementById("confirmPassword").setCustomValidity("Passwords do not match");
-            }
-            else{
-                document.getElementById("confirmPassword").setCustomValidity("");
-            }
-		    
-        }
-    </script>
+
 </html>

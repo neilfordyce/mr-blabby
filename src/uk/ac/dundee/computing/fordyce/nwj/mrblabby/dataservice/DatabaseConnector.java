@@ -1,6 +1,7 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.annotation.Resource;
@@ -49,7 +50,6 @@ public class DatabaseConnector {
         try {
             connect = getConnection();
             statement = connect.createStatement();
-            connect.prepareStatement("email_exists");
             statement.execute(command);
         } catch (SQLException e) {
             System.err.println("Error while executing SQL statement" + e.toString());

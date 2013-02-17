@@ -19,10 +19,10 @@
             <div class="glass">
                 <form action="login" method="post">
                     <label for="email">Email</label>
-                    <input type="email" name="email" placeholder="email address" value="${param.email}" required">
+                    <input type="email" name="email" placeholder="email address" required/>
                     <br>
                     <label for="password">Password</label>
-                    <input type="password" name="password" placeholder="password" required id="password" onkeyup="checkPass();">
+                    <input type="password" name="password" placeholder="password" required id="password"/>
                     <br>
                     <input type="submit" name="login" value="Login" id="login">
                 </form>
