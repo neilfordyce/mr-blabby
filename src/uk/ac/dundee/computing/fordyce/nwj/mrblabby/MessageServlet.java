@@ -34,40 +34,20 @@ public class MessageServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //System.out.println(request.getPathTranslated());
-        //System.out.println(request.getPathInfo().startsWith("/create"));
-
-
-
 
         //Login check
         if ((User) request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/MrBlabby/login");
         } else {
-
-            int startIndex = 0;
-            int maxMessages = 10;
+            
             String messageListIndex = request.getParameter("messageListIndex");
-            if (messageListIndex != null) {
-                startIndex = Integer.parseInt(messageListIndex);
-            }
+            
+            //Decide what messages to put in the message list based on path info
+            MessageList messageList = MessageList.getMessageListInstance(request.getPathInfo(), messageListIndex);           
 
-            MessageList messageList = new MessageList();
-            String idParameter = request.getPathInfo();
-            idParameter = cleanParameter(idParameter);
-            if (idParameter != null && !idParameter.isEmpty()) {
-                System.out.println(idParameter);
-
-                if (isEmail(idParameter)) {
-                    messageList = new MessageList(idParameter, startIndex, maxMessages);
-                } else if (isNumeric(idParameter)) {
-                    int id = Integer.parseInt(idParameter);
-                    messageList = new MessageList(id);
-                }
-            } else {
-                messageList = new MessageList(startIndex, maxMessages);
-            }
-
+            /*
+             * Decide which page to forward to based on contents of message list
+             */
             if (messageList.getMessage().isEmpty()) {
                 request.getRequestDispatcher("/messageNotFound.jsp").forward(request, response);
             } else {
@@ -99,43 +79,5 @@ public class MessageServlet extends HttpServlet {
         MessageService ms = new MessageService();
         ms.createMessage((User) request.getSession().getAttribute("user"), request.getParameter("message"));
         doGet(request, response);
-    }
-
-    /**
-     * Checks if an email address is valid Based on answer from
-     * http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
-     *
-     * @return true if email address is valid, false otherwise
-     */
-    private boolean isEmail(String idParameter) {
-        boolean result = true;
-
-        try {
-            InternetAddress emailAddr = new InternetAddress(idParameter);
-            emailAddr.validate();
-        } catch (AddressException ex) {
-            result = false;
-        }
-        return result;
-    }
-
-    /**
-     * Removes / prefix from parameter
-     *
-     * @param idParameter
-     * @return idParameter with / removed
-     */
-    private String cleanParameter(String idParameter) {
-        return idParameter.replaceAll("[/]", "");
-    }
-
-    /**
-     * Determines if id is numeric
-     *
-     * @param idParameter
-     * @return true if the id is numeric
-     */
-    private boolean isNumeric(String idParameter) {
-        return idParameter.matches("\\d+");
     }
 }

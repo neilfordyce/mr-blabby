@@ -75,18 +75,17 @@ public class MessageService extends DatabaseConnector {
     /**
      * Gets a message list for the message with a particular id
      * 
-     * @param startMessage
-     * @param maxMessages
+     * @param id
      * @return 
      */
-    public MessageList getMessageList(int id){
+    public MessageList getMessageList(String id){
         try {
             connect = getConnection();
             
             PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
                                                         + "FROM message WHERE message_id = ?");
             
-            ps.setInt(1, id);
+            ps.setInt(1, Integer.parseInt(id));
             
             MessageList messageList = execute(ps, 0, 1);
  
