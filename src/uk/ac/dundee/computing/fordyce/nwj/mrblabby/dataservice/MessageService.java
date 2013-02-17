@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice;
 
 import java.sql.CallableStatement;
@@ -13,7 +9,8 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
 
 /**
- *
+ * Service for connecting to database and querying Message table
+ * 
  * @author Neil
  */
 public class MessageService extends DatabaseConnector {
@@ -82,17 +79,16 @@ public class MessageService extends DatabaseConnector {
      * @param maxMessages
      * @return 
      */
-    public MessageList getMessageList(int startMessage, int maxMessages, int id){
+    public MessageList getMessageList(int id){
         try {
             connect = getConnection();
             
             PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
-                                                        + "FROM message WHERE id = ?"
-                                                        + "ORDER BY created_timestamp DESC;");
+                                                        + "FROM message WHERE message_id = ?");
             
             ps.setInt(1, id);
             
-            MessageList messageList = execute(ps, startMessage, maxMessages);
+            MessageList messageList = execute(ps, 0, 1);
  
             return messageList;
         } catch (SQLException e) {
@@ -129,6 +125,16 @@ public class MessageService extends DatabaseConnector {
         return null;
     }
     
+    /**
+     * General method for creating MessageList from the resultset of prepared 
+     * statement.  
+     * 
+     * @param ps - executed to get message from database
+     * @param startMessage - index of first message to put in list
+     * @param maxMessages - max number of messages to put in the list
+     * @return a list of messages from the database
+     * @throws SQLException 
+     */
     private MessageList execute(PreparedStatement ps, int startMessage, int maxMessages) throws SQLException {
         ResultSet rs = ps.executeQuery();
         int querySize = 0;

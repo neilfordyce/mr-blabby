@@ -5,6 +5,8 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
 
 import java.io.IOException;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,6 +37,9 @@ public class MessageServlet extends HttpServlet {
         //System.out.println(request.getPathTranslated());
         //System.out.println(request.getPathInfo().startsWith("/create"));
 
+
+
+
         //Login check
         if ((User) request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/MrBlabby/login");
@@ -43,19 +48,37 @@ public class MessageServlet extends HttpServlet {
             int startIndex = 0;
             int maxMessages = 10;
             String messageListIndex = request.getParameter("messageListIndex");
-            if(messageListIndex != null){
+            if (messageListIndex != null) {
                 startIndex = Integer.parseInt(messageListIndex);
             }
-            
-            MessageList messageList = new MessageList((User) request.getSession().getAttribute("user"), startIndex, maxMessages);
-            
-            request.setAttribute("messageList", messageList);
-            
-            if(messageListIndex == null) {
-                request.getRequestDispatcher("/messageList.jsp").forward(request, response);
+
+            MessageList messageList = new MessageList();
+            String idParameter = request.getPathInfo();
+            idParameter = cleanParameter(idParameter);
+            if (idParameter != null && !idParameter.isEmpty()) {
+                System.out.println(idParameter);
+
+                if (isEmail(idParameter)) {
+                    messageList = new MessageList(idParameter, startIndex, maxMessages);
+                } else if (isNumeric(idParameter)) {
+                    int id = Integer.parseInt(idParameter);
+                    messageList = new MessageList(id);
+                }
+            } else {
+                messageList = new MessageList(startIndex, maxMessages);
             }
-            else{
-                request.getRequestDispatcher("/messageFragment.jsp").forward(request, response);
+
+            if (messageList.getMessage().isEmpty()) {
+                request.getRequestDispatcher("/messageNotFound.jsp").forward(request, response);
+            } else {
+
+                request.setAttribute("messageList", messageList);
+
+                if (messageListIndex == null) {
+                    request.getRequestDispatcher("/messageList.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("/messageFragment.jsp").forward(request, response);
+                }
             }
         }
     }
@@ -63,6 +86,8 @@ public class MessageServlet extends HttpServlet {
     /**
      * Handles the HTTP
      * <code>POST</code> method.
+     *
+     * Creates message
      *
      * @param request servlet request
      * @param response servlet response
@@ -74,5 +99,43 @@ public class MessageServlet extends HttpServlet {
         MessageService ms = new MessageService();
         ms.createMessage((User) request.getSession().getAttribute("user"), request.getParameter("message"));
         doGet(request, response);
+    }
+
+    /**
+     * Checks if an email address is valid Based on answer from
+     * http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+     *
+     * @return true if email address is valid, false otherwise
+     */
+    private boolean isEmail(String idParameter) {
+        boolean result = true;
+
+        try {
+            InternetAddress emailAddr = new InternetAddress(idParameter);
+            emailAddr.validate();
+        } catch (AddressException ex) {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Removes / prefix from parameter
+     *
+     * @param idParameter
+     * @return idParameter with / removed
+     */
+    private String cleanParameter(String idParameter) {
+        return idParameter.replaceAll("[/]", "");
+    }
+
+    /**
+     * Determines if id is numeric
+     *
+     * @param idParameter
+     * @return true if the id is numeric
+     */
+    private boolean isNumeric(String idParameter) {
+        return idParameter.matches("\\d+");
     }
 }

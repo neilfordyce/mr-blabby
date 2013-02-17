@@ -17,8 +17,32 @@ public class MessageList implements Serializable {
     public MessageList() {
         
     }
+    
+    public MessageList(int messageID) {
+        this.startMessageIndex = 0;
+        MessageService ms = new MessageService();
+        MessageList messageList = ms.getMessageList(messageID);
+        message = messageList.getMessage();
+        querySize = 1;
+    }
+    
+    public MessageList(int startMessage, int maxMessages) {
+        this.startMessageIndex = startMessage;
+        MessageService ms = new MessageService();
+        MessageList messageList = ms.getMessageList(startMessage, maxMessages);
+        message = messageList.getMessage();
+        querySize = messageList.getQuerySize();
+    }
 
     public MessageList(User user, int startMessage, int maxMessages) {
+        this.startMessageIndex = startMessage;
+        MessageService ms = new MessageService();
+        MessageList messageList = ms.getMessageList(user, startMessage, maxMessages);
+        message = messageList.getMessage();
+        querySize = messageList.getQuerySize();
+    }
+    
+    public MessageList(String user, int startMessage, int maxMessages) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();
         MessageList messageList = ms.getMessageList(user, startMessage, maxMessages);

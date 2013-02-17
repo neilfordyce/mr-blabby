@@ -11,7 +11,7 @@
         <jsp:include page="style.jsp"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <script src="http://code.jquery.com/jquery-latest.js"></script>
-        <title>Profile</title>
+        <title>Messages</title>
     </head>
     <body>
         <jsp:include page="nav.jsp"/>
@@ -19,27 +19,31 @@
             <div class="messages" id="messages">
                 <h2>Messages</h2> 
                 <jsp:include page="messageFragment.jsp"/>
-
             </div>
         </div>
 
         <script>
+            /*
+             * Ajax script to get more messages when within 200 pixels of the bottom
+             */
             $(document).ready(function(){
-                var requestCount = 0;
+                var startMessageIndex = 0;
+                var requestInProgress = false;  //make sure many requests aren't made while waiting for page to resize
 
                 $(window).scroll(function(){  //when scrolling
 
-                    //When near the bottom of the page
-                    if  (($(document).height() - $(window).height()) - $(window).scrollTop() < 1000 ){
+                    //Load more when within 200 pixels of the bottom
+                    if  (($(document).height() - $(window).height()) - $(window).scrollTop() < 200
+                            && requestInProgress != true){
                         
-                        requestCount += ${messageList.size};  //Get next batch of messages
+                        requestInProgress = true;
+                        startMessageIndex += ${messageList.size};  //Get next batch of messages
                         
                         //Only make the request if there are more messages to get
-                        if(${messageList.querySize} > requestCount){
-                            var dataRequestObject = {messageListIndex:requestCount};
+                        if(${messageList.querySize} > startMessageIndex){
+                            var dataRequestObject = {messageListIndex:startMessageIndex};
                             
                             $.ajax({
-                                url:'http://localhost:8080/MrBlabby/message/',
                                 cache:false,
                                 data:dataRequestObject,
                                 error:function(xhr, ajaxOptions){
@@ -47,6 +51,7 @@
                                 } 
                             }).done(function( html ) {
                                 $("#messages").append(html);
+                                requestInProgress = false;
                             });
                         }
                     }
