@@ -4,7 +4,7 @@
     Author     : Neil
 --%>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,14 +18,17 @@
         <jsp:include page="nav.jsp"/>
         <div class="container">
             <h1>Profile</h1>
+            <h2><c:out value="${profile.firstname} ${profile.lastname}"></c:out></h2>
             
             <form action="message" method="post">
-                <textarea class="message" name="message" id="message" placeholder="w'azzzzzup..." maxlength="141" required></textarea>
+                <textarea class="message" name="message" id="message" placeholder="w'azzzzzup..." maxlength="141" required rows="4" cols="46"></textarea>
                 <br>
                 <input type="submit" name="submit" value="Post"/>
             </form>
-            
             <span id="counter"></span> 
+            
+            <a href="/MrBlabby/friend/<c:out value="${profile.email}"/>">Add ${profile.firstname} as a friend</a>
+            <jsp:include page="/friendList.jsp"/>
         </div>
         
         <script>
@@ -44,3 +47,4 @@
         </script>
     </body>
 </html>
+

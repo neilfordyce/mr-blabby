@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
-import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.LoginService;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.UserService;
 
 /**
  *
@@ -45,21 +45,21 @@ public class LoginServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-            //Get information from form
-            String email = request.getParameter("email");
-            String password = request.getParameter("password");
 
-            LoginService login = new LoginService();
+        //Get information from form
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
 
-            try {
-                User user = login.getUser(email, password);
-                request.getSession().setAttribute("user", user);
-                response.sendRedirect("/MrBlabby/profile");
-                
-            } catch (LoginException | SQLException ex) {
-                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
-                doGet(request, response);
-            }
+        UserService login = new UserService();
+
+        try {
+            User user = login.getUserLogin(email, password);
+            request.getSession().setAttribute("user", user);
+            response.sendRedirect("/MrBlabby/profile");
+
+        } catch (LoginException | SQLException ex) {
+            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            doGet(request, response);
+        }
     }
 }

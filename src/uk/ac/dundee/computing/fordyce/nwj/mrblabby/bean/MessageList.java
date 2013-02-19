@@ -152,7 +152,10 @@ public class MessageList implements Serializable {
      * @param idParameter
      * @return idParameter with / removed
      */
-    private static String cleanParameter(String idParameter) {
+    public static String cleanParameter(String idParameter) {
+        if(idParameter == null)
+            return "";
+        
         return idParameter.replaceAll("[/]", "");
     }
 
@@ -163,6 +166,9 @@ public class MessageList implements Serializable {
      * @return true if the id is numeric
      */
     private static boolean isNumeric(String idParameter) {
+        if(idParameter == null)
+            return false;
+        
         return idParameter.matches("\\d+");
     }
 }

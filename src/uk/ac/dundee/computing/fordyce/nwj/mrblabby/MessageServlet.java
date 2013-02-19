@@ -5,8 +5,6 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
 
 import java.io.IOException;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,12 +40,10 @@ public class MessageServlet extends HttpServlet {
             
             String messageListIndex = request.getParameter("messageListIndex");
             
-            //Decide what messages to put in the message list based on path info
-            MessageList messageList = MessageList.getMessageListInstance(request.getPathInfo(), messageListIndex);           
-
-            /*
-             * Decide which page to forward to based on contents of message list
-             */
+            //Get message list based on path info and index parameter
+            MessageList messageList = MessageList.getMessageListInstance(request.getPathInfo(), messageListIndex);
+            
+            //Decide which page to forward to based on contents of message list
             if (messageList.getMessage().isEmpty()) {
                 request.getRequestDispatcher("/messageNotFound.jsp").forward(request, response);
             } else {
@@ -62,8 +58,8 @@ public class MessageServlet extends HttpServlet {
             }
         }
     }
-
-    /**
+    
+        /**
      * Handles the HTTP
      * <code>POST</code> method.
      *
@@ -79,5 +75,11 @@ public class MessageServlet extends HttpServlet {
         MessageService ms = new MessageService();
         ms.createMessage((User) request.getSession().getAttribute("user"), request.getParameter("message"));
         doGet(request, response);
+    }
+    
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
     }
 }

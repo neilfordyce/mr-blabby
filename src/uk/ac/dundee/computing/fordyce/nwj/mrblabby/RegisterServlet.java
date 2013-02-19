@@ -12,9 +12,9 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.EmailExistsExceptio
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet(urlPatterns = {"/register", "/register/*"})
+@WebServlet(urlPatterns = {"/create/register", "/create/register/*"})
 public class RegisterServlet extends HttpServlet {
-    
+
     /*
      * Show the register.jsp page
      */
@@ -39,11 +39,14 @@ public class RegisterServlet extends HttpServlet {
         //Pass the info to the register service
         RegisterService register = new RegisterService();
         try {
-            register.registerUser(firstname, lastname, email, password);
-            //Forward to success page
             request.setAttribute("name", firstname);
-            request.getRequestDispatcher("/registerSuccess.jsp").forward(request, response);
-            
+            if (register.registerUser(firstname, lastname, email, password)) {
+                //Forward to success page
+                request.getRequestDispatcher("/registerSuccess.jsp").forward(request, response);
+            }else{
+                request.getRequestDispatcher("/error.jsp").forward(request, response);
+            }
+
         } catch (EmailExistsException e) {
             request.setAttribute("email", email);
             request.getRequestDispatcher("/emailExists.jsp").forward(request, response);

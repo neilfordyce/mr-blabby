@@ -4,6 +4,9 @@ import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.Message;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
@@ -31,7 +34,7 @@ public class MessageService extends DatabaseConnector {
             proc.execute();
             connect.close();
         } catch (SQLException e) {
-            System.err.println("Database connection unavailable to create message: " + e.toString());
+            System.err.println("Database connection unavailable to get message: " + e.toString());
         }
     }
     
@@ -66,7 +69,7 @@ public class MessageService extends DatabaseConnector {
 
             return messageList;
         } catch (SQLException e) {
-            System.err.println("Database connection unavailable to create message: " + e.toString());
+            System.err.println("Database connection unavailable to get message: " + e.toString());
         }
         
         return null;
@@ -91,7 +94,7 @@ public class MessageService extends DatabaseConnector {
  
             return messageList;
         } catch (SQLException e) {
-            System.err.println("Database connection unavailable to create message: " + e.toString());
+            System.err.println("Database connection unavailable to get message: " + e.toString());
         }
         
         return null;
@@ -118,7 +121,41 @@ public class MessageService extends DatabaseConnector {
   
             return messageList;
         } catch (SQLException e) {
-            System.err.println("Database connection unavailable to create message: " + e.toString());
+            System.err.println("Database connection unavailable to get message: " + e.toString());
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 
+     * Gets a message list for all the messages posted by a users friends in 
+     * order of most recent first
+     * 
+     * @param user - to find friends of to list messages for
+     * @param startMessage
+     * @param maxMessages
+     * @return 
+     */
+    public MessageList getFriendsMessageList(User user, int startMessage, int maxMessages){
+        String email = user.getEmail();
+        
+        try {
+            connect = getConnection();
+            
+            PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
+                                                        + "FROM message, friend "
+                                                        + "WHERE friend.user_email = ?"
+                                                        + "AND friend.friend_email = email"
+                                                        + "ORDER BY created_timestamp DESC;");
+            
+            ps.setString(1, email);
+            
+            MessageList messageList = execute(ps, startMessage, maxMessages);
+  
+            return messageList;
+        } catch (SQLException e) {
+            System.err.println("Database connection unavailable to get message: " + e.toString());
         }
         
         return null;
@@ -164,5 +201,34 @@ public class MessageService extends DatabaseConnector {
         connect.close();
         
         return messageList;
+    }
+    
+    /**
+     * Deletes a message record from the message table
+     * 
+     * @param id of message to be deleted
+     * @return true if the delete was successful, false otherwise
+     */
+    public boolean deleteMessage(int id){
+        
+        try {
+            connect = getConnection();
+            CallableStatement proc = connect.prepareCall("{ ? = call delete_message(?)}");
+            proc.registerOutParameter(1, java.sql.Types.BOOLEAN);
+            proc.setInt(2, id);
+            proc.execute();
+            
+        } catch (SQLException e) {
+            System.err.println("Database connection unavailable to delete message: " + e.toString());
+            return false;
+        } finally {
+            try {
+                connect.close();
+            } catch (SQLException ex) {
+                System.err.println("Unable to close connection: " + ex.toString());
+            }
+        }
+        
+        return true;
     }
 }

@@ -11,13 +11,13 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
  *
  * @author Neil
  */
-public class LoginService extends DatabaseConnector {
+public class UserService extends DatabaseConnector {
 
     /**
-     * Queries the database to see if the email and password given matches a 
+     * Queries the database to see if the email and password given matches a
      * record in the database
-     * 
-     * @param email 
+     *
+     * @param email
      * @param password
      * @return true if the email and password match or false otherwise
      */
@@ -32,41 +32,57 @@ public class LoginService extends DatabaseConnector {
             return proc.getBoolean(1);
         } catch (SQLException ex) {
             System.err.println("error authenticating login credentials: " + ex.toString());
-            Logger.getLogger(LoginService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return false;
     }
 
     /**
-     * Authenticates the credentials then creates a User bean 
-     * containing email and names for the given email password combo
-     * 
+     * Authenticates the credentials then creates a User bean containing email
+     * and names for the given email
+     *
      * @param email
      * @param password
      * @return User bean object with email and names
      * @throws LoginException when credentials are wrong
      * @throws SQLException if there is a connection error
      */
-    public User getUser(String email, String password) throws LoginException, SQLException {
+    public User getUserLogin(String email, String password) throws LoginException, SQLException {
 
         if (!authenticate(email, password)) {
             throw new LoginException("Email and password do not match");
         }
-        
-        connect = getConnection();
-        
-        CallableStatement proc = connect.prepareCall("{call get_names(?, ?, ?, ?)}");
-        proc.setString(1, email);
-        proc.setString(2, password);
-        proc.registerOutParameter(3, java.sql.Types.VARCHAR);
-        proc.registerOutParameter(4, java.sql.Types.VARCHAR);
-        proc.execute();
-        
-        String firstname = proc.getString(3);
-        String lastname = proc.getString(4);
-        
-        connect.close();
+
+        return getUser(email);
+    }
+
+    /**
+     * Gets a User object for user account with corresponding email
+     * 
+     * @param email
+     * @return User populated with email and names associated with that email
+     */
+    public User getUser(String email) {
+        String firstname = "";
+        String lastname = "";
+
+        try {
+            connect = getConnection();
+
+            CallableStatement proc = connect.prepareCall("{call get_names(?, ?, ?)}");
+            proc.setString(1, email);
+            proc.registerOutParameter(2, java.sql.Types.VARCHAR);
+            proc.registerOutParameter(3, java.sql.Types.VARCHAR);
+            proc.execute();
+
+            firstname = proc.getString(2);
+            lastname = proc.getString(3);
+
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         User user = new User(email, firstname, lastname);
         return user;

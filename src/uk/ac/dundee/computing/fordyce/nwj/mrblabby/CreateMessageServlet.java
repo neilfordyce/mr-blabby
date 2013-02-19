@@ -1,27 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
-import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.UserNotFoundException;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.MessageService;
 
 /**
  *
  * @author Neil
  */
-@WebServlet(urlPatterns = {"/profile", "/profile/*"})
-public class ProfileServlet extends HttpServlet {
-
+@WebServlet(urlPatterns = {"/create/message", "/create/message/*"})
+public class CreateMessageServlet extends HttpServlet {
+    
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -33,29 +27,14 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/MrBlabby/login");
-        } else {
-            String emailParameter = request.getPathInfo();
-            
-            User user = null;
-            try {
-                user = new User(emailParameter);
-
-            } catch (UserNotFoundException ex) {
-                Logger.getLogger(ProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            if (user == null) {
-                user = (User) request.getSession().getAttribute("user");
-            }
-            request.setAttribute("profile", user);
-            request.getRequestDispatcher("/profile.jsp").forward(request, response);
-        }
+        response.sendRedirect("/MrBlabby/profile");
     }
-
+    
     /**
      * Handles the HTTP
      * <code>POST</code> method.
+     *
+     * Creates message
      *
      * @param request servlet request
      * @param response servlet response
@@ -64,5 +43,8 @@ public class ProfileServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        MessageService ms = new MessageService();
+        ms.createMessage((User) request.getSession().getAttribute("user"), request.getParameter("message"));
+        doGet(request, response);
     }
 }
