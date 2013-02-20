@@ -15,27 +15,40 @@ public class Message implements Serializable {
     
     private String message;
     private String sender;
+    private int id;
     private Calendar createdTime;
     
     public Message() {
         
     }
 
-    public Message(String message, String sender, Calendar createdTime) {
+    public Message(String message, String sender, Calendar createdTime, int id) {
         this.message = message;
         this.sender = sender;
         this.createdTime = createdTime;
+        this.id = id;
     }
     
-    public Message(String message, String sender, long createdTimeMillis) {
+    public Message(String message, String sender, long createdTimeMillis, int id) {
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(createdTimeMillis);
         
         this.message = message;
         this.sender = sender;
         this.createdTime = cal;
+        this.id = id;
     }
 
+    public String getId() {
+        return String.valueOf(id);
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    
+    
     public String getMessage() {
         return message;
     }

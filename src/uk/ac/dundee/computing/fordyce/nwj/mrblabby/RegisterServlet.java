@@ -12,7 +12,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.EmailExistsExceptio
 /**
  * Servlet implementation class RegisterServlet
  */
-@WebServlet(urlPatterns = {"/create/register", "/create/register/*"})
+@WebServlet(urlPatterns = {"/register", "/register/*"})
 public class RegisterServlet extends HttpServlet {
 
     /*

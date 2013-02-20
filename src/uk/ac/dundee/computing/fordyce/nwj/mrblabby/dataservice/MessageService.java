@@ -61,7 +61,7 @@ public class MessageService extends DatabaseConnector {
         try {
             connect = getConnection();
             
-            PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
+            PreparedStatement ps = connect.prepareStatement("SELECT * "
                                                         + "FROM message WHERE email = ?"
                                                         + "ORDER BY created_timestamp DESC;");
             ps.setString(1, email);
@@ -85,7 +85,7 @@ public class MessageService extends DatabaseConnector {
         try {
             connect = getConnection();
             
-            PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
+            PreparedStatement ps = connect.prepareStatement("SELECT * "
                                                         + "FROM message WHERE message_id = ?");
             
             ps.setInt(1, Integer.parseInt(id));
@@ -112,7 +112,7 @@ public class MessageService extends DatabaseConnector {
         try {
             connect = getConnection();
             
-            PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
+            PreparedStatement ps = connect.prepareStatement("SELECT * "
                                                         + "FROM message "
                                                         + "ORDER BY created_timestamp DESC;");
             
@@ -143,7 +143,7 @@ public class MessageService extends DatabaseConnector {
         try {
             connect = getConnection();
             
-            PreparedStatement ps = connect.prepareStatement("SELECT message, email, created_timestamp "
+            PreparedStatement ps = connect.prepareStatement("SELECT * "
                                                         + "FROM message, friend "
                                                         + "WHERE friend.user_email = ?"
                                                         + "AND friend.friend_email = email"
@@ -187,7 +187,9 @@ public class MessageService extends DatabaseConnector {
             querySize++;
             Message message = new Message(rs.getString("message"),
                                             rs.getString("email"),
-                                            rs.getTimestamp("created_timestamp").getTime());
+                                            rs.getTimestamp("created_timestamp").getTime(),
+                                            rs.getInt("message_id"));
+            
             messageList.addMessage(message);
             maxMessages--;
         }

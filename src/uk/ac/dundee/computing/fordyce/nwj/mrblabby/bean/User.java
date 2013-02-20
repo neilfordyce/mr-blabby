@@ -77,4 +77,29 @@ public class User implements Serializable {
         FriendService fs = new FriendService();
         return fs.addFriend(this.email, email);
     }
+    
+    /**
+     * Finds if an email address if a friend of the user or not
+     * 
+     * @param email to search for
+     * @return true if the email is a friend of the user or if the email is the user
+     */
+    public boolean isFriend(String email){
+        email = MessageList.cleanParameter(email); //Remove any / prefix
+        
+        //Check this user's email
+        if(this.email.equals(email)){
+            return true;
+        }
+        
+        //Check each of the friends
+        for(User friend : getFriendList()){
+            if(friend.getEmail().equals(email)) {
+                return true;
+            }
+        }
+        
+        //Can't be true, so
+        return false;
+    }
 }

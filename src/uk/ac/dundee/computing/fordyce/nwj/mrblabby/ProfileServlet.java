@@ -36,19 +36,27 @@ public class ProfileServlet extends HttpServlet {
         if (request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/MrBlabby/login");
         } else {
-            String emailParameter = request.getPathInfo();
-            
-            User user = null;
-            try {
-                user = new User(emailParameter);
 
+            //Default selected user profile is same as the session user
+            User selectedUser = (User) request.getSession().getAttribute("user");
+
+            //Try to get a user for the requested profile 
+            String emailParameter = request.getPathInfo();
+
+            try {
+                selectedUser = new User(emailParameter);
             } catch (UserNotFoundException ex) {
                 Logger.getLogger(ProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            if (user == null) {
-                user = (User) request.getSession().getAttribute("user");
-            }
-            request.setAttribute("profile", user);
+            
+           /* Find out if the user whos page was requested can be addedas a friend 
+            * by the currentUser */
+            User currentUser = (User) request.getSession().getAttribute("user");
+            request.setAttribute("friendable", !currentUser.isFriend(selectedUser.getEmail()));
+            //Selected user is only friendable when the currentUser is not friends with the selected user
+            
+            //Go to profile
+            request.setAttribute("profile", selectedUser);
             request.getRequestDispatcher("/profile.jsp").forward(request, response);
         }
     }

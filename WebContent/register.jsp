@@ -9,16 +9,18 @@
         <title>Register</title>
     </head>
     <body>
-        <jsp:include page="nav.jsp"/>
         <div class="container">
             <h1>Register</h1>
             <div class="glass">
-                <form action="create/register" method="post">
+                <form action="register" method="post">
                     <label for="firstname">First name</label>
                     <input type="text" name="firstname" placeholder="firstname" value="<c:out value="${param.firstname}"/>" required autofocus="autofocus"/>
                     <br>
                     <label for="lastname">Last name</label>
                     <input type="text" name="lastname" placeholder="lastname" value="<c:out value="${param.lastname}"/>" required/>
+                    <br>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" placeholder="email" value="<c:out value="${param.lastname}"/>" required/>
                     <br>
                     <label for="password">Password</label>
                     <input type="password" name="password" placeholder="password" required id="password" onkeyup="checkPass();"/>

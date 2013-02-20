@@ -12,24 +12,24 @@
         <jsp:include page="nav.jsp"/>
         <div class="container">
             <h1>Update Details</h1>
+            
+            <h4>Only enter details into fields you want to update.</h4>
+            
             <div class="glass">
-                <form action="update/profile" method="post">
+                <form method="post">
                     <label for="firstname">First name</label>
-                    <input type="text" name="firstname" placeholder="firstname" value="<c:out value="${param.firstname}"/>" autofocus="autofocus"/>
-                    <br>
+                    <input type="text" name="firstname" placeholder="firstname" autofocus="autofocus" value=""/>
+                    
                     <label for="lastname">Last name</label>
-                    <input type="text" name="lastname" placeholder="lastname" value="<c:out value="${param.lastname}"/>" />
-                    <br>
-                    <label for="email">Email</label>
-                    <input type="email" name="email" placeholder="email address" value="<c:out value="${param.email}"/>" />
-                    <br>
+                    <input type="text" name="lastname" placeholder="lastname" value=""/>
+                    
                     <label for="password">Password</label>
-                    <input type="password" name="password" placeholder="password" required id="password" onkeyup="checkPass();"/>
-                    <br>
+                    <input type="password" name="password" placeholder="password" id="password" onkeyup="checkPass();" value=""/>
+                    
                     <label for="confirmPassword">Confirm password</label>
-                    <input type="password" name="confirmPassword" placeholder="retype password" required id="confirmPassword" onkeyup="checkPass();"/>
+                    <input type="password" name="confirmPassword" placeholder="retype password" id="confirmPassword" onkeyup="checkPass();" value=""/>
                     <br>
-                    <input type="submit" name="register" value="Register" id="register"/>
+                    <input type="submit" name="update" value="Update" id="update"/>
                 </form>
             </div>
         </div>

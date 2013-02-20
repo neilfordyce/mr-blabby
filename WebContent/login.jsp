@@ -13,7 +13,6 @@
         <title>Login</title>
     </head>
     <body>
-        <jsp:include page="nav.jsp"/>
         <div class="container">
             <h1>Login</h1>
             <div class="glass">
@@ -27,6 +26,7 @@
                     <input type="submit" name="login" value="Login" id="login">
                 </form>
             </div>
+            <a href="${pageContext.request.contextPath}/register">Not signed up yet?</a>
         </div>
     </body>
 </html>

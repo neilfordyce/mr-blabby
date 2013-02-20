@@ -9,7 +9,6 @@
         <title>Register</title>
     </head>
     <body>
-        <jsp:include page="nav.jsp"/>
         <div class="container">
             <h1>Oh no!</h1>
             <br>
