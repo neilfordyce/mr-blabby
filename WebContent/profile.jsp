@@ -20,20 +20,32 @@
             <h1>Profile</h1>
             <h2><c:out value="${profile.firstname} ${profile.lastname}"></c:out></h2>
 
-            <form action="message" method="post">
-                <textarea class="message" name="message" id="message" placeholder="w'azzzzzup..." maxlength="141" required rows="4" cols="46"></textarea>
+            <div class="profile-messages messages" id="messages">
+                <h2>Messages</h2>
+                <jsp:include page="/messageFragment.jsp"/>
+            </div>
+            
+
+            <form action="message" method="post" class="messages profile-friends">
+                <h2>Create Post</h2>
+                <textarea class="message" id="message" name="message" placeholder="w'azzzzzup..." maxlength="141" required rows="4" cols="43"></textarea>
+                <span id="counter"></span>
                 <br>
                 <input type="submit" name="submit" value="Post"/>
             </form>
-            <span id="counter"></span> 
-
+             
+            
+            <br>
             <c:if test="${friendable}">
                 <a href="<c:url value="/friend/${profile.email}"></c:url>">Add ${profile.firstname} as a friend</a>      
             </c:if>
+            <br>
 
-            <jsp:include page="/friendList.jsp"/>
-            <jsp:include page="/messageFragment.jsp"/>
-
+            <div class="profile-friends messages" id="friends">
+                <h2>Friends</h2>
+                <jsp:include page="/friendFragment.jsp"/>
+            </div>
+            
 
         </div>
 
@@ -51,6 +63,8 @@
                 $(message).keyup(updateCounter);
             });
         </script>
+        
+        <jsp:include page="messageLoader.jsp"/>
     </body>
 </html>
 

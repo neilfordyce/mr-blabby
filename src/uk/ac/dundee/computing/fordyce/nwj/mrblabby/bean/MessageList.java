@@ -15,7 +15,7 @@ public class MessageList implements Serializable {
     private LinkedList<Message> message = new LinkedList<>();
     private int startMessageIndex = 0;
     private int querySize = 0;
-    private static final int maxMessages = 10;
+    private static final int MAX_MESSAGES = 10;
 
     public MessageList() {
     }
@@ -31,7 +31,7 @@ public class MessageList implements Serializable {
     public MessageList(int startMessage) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();
-        MessageList messageList = ms.getMessageList(startMessage, maxMessages);
+        MessageList messageList = ms.getMessageList(startMessage, MAX_MESSAGES);
         message = messageList.getMessage();
         querySize = messageList.getQuerySize();
     }
@@ -39,7 +39,7 @@ public class MessageList implements Serializable {
     public MessageList(User user, int startMessage) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();
-        MessageList messageList = ms.getMessageList(user, startMessage, maxMessages);
+        MessageList messageList = ms.getMessageList(user, startMessage, MAX_MESSAGES);
         message = messageList.getMessage();
         querySize = messageList.getQuerySize();
     }
@@ -47,7 +47,7 @@ public class MessageList implements Serializable {
     public MessageList(String user, int startMessage) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();
-        MessageList messageList = ms.getMessageList(user, startMessage, maxMessages);
+        MessageList messageList = ms.getMessageList(user, startMessage, MAX_MESSAGES);
         message = messageList.getMessage();
         querySize = messageList.getQuerySize();
     }
@@ -90,44 +90,72 @@ public class MessageList implements Serializable {
     }
 
     public static int getMaxMessages() {
-        return maxMessages;
+        return MAX_MESSAGES;
     }
 
     /**
      * Decide what messages to put in the message list based on path info
      *
-     * @param idParameter email or message id, if it is not valid all messages are selected
+     * @param idParameter email or message id, if it is not valid all messages
+     * are selected
      * @param messageListIndex where to start the message list from, null=0
      * @return Message list with contents specified by request idParameter
      */
     public static MessageList getMessageListInstance(String idParameter, String messageListIndex) {
-        
+
+        MessageService ms = new MessageService();
+
         //Take a start index if one is given, otherwise make it 0
         int startIndex = 0;
         if (messageListIndex != null) {
             startIndex = Integer.parseInt(messageListIndex);
         }
-        
+
         //Set up message list
-        MessageList messageList = new MessageList();
+        MessageList messageList;
         idParameter = cleanParameter(idParameter);
-        
+
         //Decide which messages to put in the list based on idParameter
         if (idParameter != null && !idParameter.isEmpty()) {
-        
+
             if (isEmail(idParameter)) {
                 messageList = new MessageList(idParameter, startIndex); //get messages of a particular user
             } else if (isNumeric(idParameter)) {
                 messageList = new MessageList(idParameter);             //get message with a particular id
+            } else {
+                messageList = ms.search(idParameter, startIndex, MAX_MESSAGES); //get messages containing search term
             }
-            
+
         } else {
             messageList = new MessageList(startIndex);                  //get all messages
         }
+
+        return messageList;
+    }
+
+    /**
+     * Gets a message list which contains only messages from friends
+     * 
+     * @param user who has friends
+     * @param messageListIndex start from this record
+     * @return messages from friends
+     */
+    public static MessageList getFriendsMessageList(User user, String messageListIndex) {
+
+        int startIndex = 0;
+        try {
+            startIndex = Integer.parseInt(messageListIndex);
+        } catch (NumberFormatException nfe) {
+        }
+
+        MessageService ms = new MessageService();
+        
+        MessageList messageList;
+        messageList = ms.getFriendsMessageList(user, startIndex, MAX_MESSAGES);
         
         return messageList;
     }
-    
+
     /**
      * Checks if an email address is valid Based on answer from
      * http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
@@ -153,9 +181,10 @@ public class MessageList implements Serializable {
      * @return idParameter with / removed
      */
     public static String cleanParameter(String idParameter) {
-        if(idParameter == null)
+        if (idParameter == null) {
             return "";
-        
+        }
+
         return idParameter.replaceAll("[/]", "");
     }
 
@@ -166,9 +195,10 @@ public class MessageList implements Serializable {
      * @return true if the id is numeric
      */
     private static boolean isNumeric(String idParameter) {
-        if(idParameter == null)
+        if (idParameter == null) {
             return false;
-        
+        }
+
         return idParameter.matches("\\d+");
     }
 }

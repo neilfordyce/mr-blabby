@@ -43,7 +43,7 @@
                 var password = document.getElementById("password").value;
                 var confirmPassword = document.getElementById("confirmPassword").value;
 			
-                if( password != confirmPassword && confirmPassword != ""){
+                if( password != confirmPassword){
                     document.getElementById("confirmPassword").setCustomValidity("Passwords do not match");
                 }
                 else{

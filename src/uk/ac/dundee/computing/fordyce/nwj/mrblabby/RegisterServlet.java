@@ -49,6 +49,7 @@ public class RegisterServlet extends HttpServlet {
 
         } catch (EmailExistsException e) {
             request.setAttribute("email", email);
+            response.sendError(409, "AccountAlreadyExists");
             request.getRequestDispatcher("/emailExists.jsp").forward(request, response);
         }
     }

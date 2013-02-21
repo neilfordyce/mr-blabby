@@ -28,6 +28,8 @@ public class FriendService extends DatabaseConnector {
      * @return true if insert was successful, false otherwise
      */
     public boolean addFriend(String userEmail, String friendEmail){
+        
+        //TODO Consider removing, you might want to follow your own posts
         if(userEmail.equals(friendEmail)) { //Check your not trying to add yourself as a friend
             return false;                   //Keep the sad people out
         }

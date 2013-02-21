@@ -1,11 +1,16 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice;
 
 import java.sql.CallableStatement;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.LoginException;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.Message;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.UserList;
 
 /**
  *
@@ -59,7 +64,7 @@ public class UserService extends DatabaseConnector {
 
     /**
      * Gets a User object for user account with corresponding email
-     * 
+     *
      * @param email
      * @return User populated with email and names associated with that email
      */
@@ -83,8 +88,104 @@ public class UserService extends DatabaseConnector {
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         User user = new User(email, firstname, lastname);
         return user;
+    }
+
+    /**
+     * Checks if a user is an admin or not
+     *
+     * @param user
+     * @return
+     */
+    public boolean isAdmin(User user) {
+        String email = user.getEmail();
+
+        try {
+            connect = getConnection();
+
+            CallableStatement proc = connect.prepareCall("{? = call is_admin(?)}");
+
+            proc.registerOutParameter(1, java.sql.Types.BOOLEAN);
+            proc.setString(2, email);
+            proc.execute();
+
+            return proc.getBoolean(1);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+    }
+
+    /**
+     * Searches the database for messages containing the search term and returns
+     * a list of themGets a message list.
+     *
+     * @param searchKey to look for
+     * @param maxMessages to get
+     * @param startMessage index to start from
+     * @return list of messages containing the search term
+     */
+    public UserList search(String searchKey, int startUser, int maxUsers) {
+        try {
+            connect = getConnection();
+
+            PreparedStatement ps = connect.prepareStatement("SELECT email, firstname, lastname "
+                    + "FROM user WHERE email LIKE ?;");
+
+            ps.setString(1, "%" + searchKey + "%");
+
+            UserList userList = execute(ps, startUser, maxUsers);
+
+            return userList;
+        } catch (SQLException e) {
+            System.err.println("Database connection unavailable to get message: " + e.toString());
+        }
+
+        return null;
+    }
+
+    /**
+     * General method for creating UserList from the resultset of prepared
+     * statement.
+     *
+     * @param ps - executed to get users from database
+     * @param startUser - index of first user to put in list
+     * @param maxUsers - max number of user to put in the list
+     * @return a list of users from the database
+     * @throws SQLException
+     */
+    private UserList execute(PreparedStatement ps, int startUser, int maxUsers) throws SQLException {
+        ResultSet rs = ps.executeQuery();
+        int querySize = 0;
+
+        //Read off records until you get to the start message
+        while (startUser > 0 && rs.next()) {
+            querySize++;
+            startUser--;
+        }
+
+        //Create user beans and add them to a uesr list bean
+        UserList userList = new UserList();
+        while (maxUsers >= 0 && rs.next()) {
+            querySize++;
+            User user = new User(rs.getString("email"),
+                    rs.getString("firstname"),
+                    rs.getString("lastname"));
+
+            userList.addUser(user);
+            maxUsers--;
+        }
+        
+        querySize += countRemainingResults(rs);
+        
+        userList.setQuerySize(querySize);
+
+        connect.close();
+
+        return userList;
     }
 }

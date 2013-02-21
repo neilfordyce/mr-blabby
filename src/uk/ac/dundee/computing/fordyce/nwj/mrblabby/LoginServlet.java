@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
         if(request.getSession().getAttribute("user") == null)
             request.getRequestDispatcher("/login.jsp").forward(request, response);
         else
-            request.getRequestDispatcher("/profile.jsp").forward(request, response);
+            response.sendRedirect(request.getContextPath() + "/profile");
     }
 
     /**

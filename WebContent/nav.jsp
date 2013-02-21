@@ -7,7 +7,7 @@
         <li><a href="/MrBlabby/following">Following</a></li>
 
         <li>
-            <form class="search" action="serach" method="post">
+            <form class="search" action="search" method="post">
                 <input class="search" name="search" type="search" placeholder="search...">
                 <input class="search" type="submit" value="">
             </form>

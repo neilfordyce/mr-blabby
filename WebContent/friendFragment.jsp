@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>                
-<h2>Friends</h2>
 <c:forEach items="${user.friendList}" var="friend">
     <div class="divider-horizontal"></div>
     <div class="message-block">

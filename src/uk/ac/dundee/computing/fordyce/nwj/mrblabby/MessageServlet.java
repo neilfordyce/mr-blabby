@@ -5,6 +5,7 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
 
 import java.io.IOException;
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,13 +39,18 @@ public class MessageServlet extends HttpServlet {
             response.sendRedirect("/MrBlabby/login");
         } else {
             
-            String messageListIndex = request.getParameter("messageListIndex");
+            if(request.getPathInfo() != null && request.getPathInfo().endsWith("/delete")){
+                doDelete(request, response);
+                return;
+            }
             
+            String messageListIndex = request.getParameter("messageListIndex");
+
             //Get message list based on path info and index parameter
             MessageList messageList = MessageList.getMessageListInstance(request.getPathInfo(), messageListIndex);
-            
+
             //Decide which page to forward to based on contents of message list
-            if (messageList.getMessage().isEmpty()) {
+            if (messageList == null || messageList.getMessage().isEmpty()) {
                 request.getRequestDispatcher("/messageNotFound.jsp").forward(request, response);
             } else {
 
@@ -58,8 +64,8 @@ public class MessageServlet extends HttpServlet {
             }
         }
     }
-    
-        /**
+
+    /**
      * Handles the HTTP
      * <code>POST</code> method.
      *
@@ -76,10 +82,27 @@ public class MessageServlet extends HttpServlet {
         ms.createMessage((User) request.getSession().getAttribute("user"), request.getParameter("message"));
         doGet(request, response);
     }
-    
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        User user = (User)request.getSession().getAttribute("user");
         
+        String requestParams = request.getPathInfo();
+        requestParams = requestParams.replaceAll("/delete", "");
+        requestParams = MessageList.cleanParameter(requestParams);
+        
+        try {
+            int messageID = Integer.parseInt(requestParams);
+            MessageService ms = new MessageService();
+            ms.deleteMessage(messageID, user);
+                
+        }catch(NumberFormatException nfe){
+            response.sendError(400, "InvalidQueryParameterValue");
+        }catch(AuthenticationException ae){
+            response.sendError(403, "InsufficientAccountPermissions");
+        }
+        
+        response.sendRedirect(request.getContextPath() + "/message");
     }
 }

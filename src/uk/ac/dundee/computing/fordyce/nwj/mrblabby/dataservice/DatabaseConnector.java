@@ -2,6 +2,7 @@ package uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.annotation.Resource;
@@ -62,5 +63,22 @@ public class DatabaseConnector {
             }
         }
         return true;
+    }
+    
+        /**
+     * Counts the remaining records in a result set so the bean knows how many 
+     * it's missing
+     * 
+     * @param rs with results to count
+     * @return number of results which were in the result set
+     * @throws SQLException 
+     */
+    protected int countRemainingResults(ResultSet rs) throws SQLException {
+        int querySize = 0;
+                
+        while (rs.next()) {
+            querySize++;
+        }
+        return querySize;
     }
 }
