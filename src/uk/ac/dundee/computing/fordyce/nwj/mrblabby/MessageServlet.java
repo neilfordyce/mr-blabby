@@ -38,11 +38,15 @@ public class MessageServlet extends HttpServlet {
         if ((User) request.getSession().getAttribute("user") == null) {
             response.sendRedirect("/MrBlabby/login");
         } else {
-            
+        
+            /*
+             * TODO remove
+             * pre-ajax method for deleting a message
+             * 
             if(request.getPathInfo() != null && request.getPathInfo().endsWith("/delete")){
                 doDelete(request, response);
                 return;
-            }
+            }*/
             
             String messageListIndex = request.getParameter("messageListIndex");
 
@@ -87,9 +91,12 @@ public class MessageServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User)request.getSession().getAttribute("user");
-        
         String requestParams = request.getPathInfo();
-        requestParams = requestParams.replaceAll("/delete", "");
+        
+        /*
+         * TODO remove
+         * pre-ajax method of deleting messages*/
+        //requestParams = requestParams.replaceAll("/delete", "");
         requestParams = MessageList.cleanParameter(requestParams);
         
         try {
@@ -98,11 +105,12 @@ public class MessageServlet extends HttpServlet {
             ms.deleteMessage(messageID, user);
                 
         }catch(NumberFormatException nfe){
-            response.sendError(400, "InvalidQueryParameterValue");
+            //response.sendError(400, "InvalidQueryParameterValue");
         }catch(AuthenticationException ae){
-            response.sendError(403, "InsufficientAccountPermissions");
+            //response.sendError(403, "InsufficientAccountPermissions");
         }
         
-        response.sendRedirect(request.getContextPath() + "/message");
+        //TODO remove pre-ajax
+        //response.sendRedirect(request.getContextPath() + "/message");
     }
 }

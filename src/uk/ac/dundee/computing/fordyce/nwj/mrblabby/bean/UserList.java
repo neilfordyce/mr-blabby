@@ -20,6 +20,15 @@ public class UserList implements Serializable {
 
     public UserList() {
     }
+    
+    /**
+     * Constructs a UserList with the friends of the input user
+     * 
+     * @param userWithFriends 
+     */
+    public UserList(User userWithFriends){
+        users = userWithFriends.getFriendList();
+    }
 
     public LinkedList<User> getUsers() {
         return users;

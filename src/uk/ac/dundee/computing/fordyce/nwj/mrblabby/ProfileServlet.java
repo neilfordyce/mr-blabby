@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.UserList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.UserNotFoundException;
 
 /**
@@ -70,7 +71,10 @@ public class ProfileServlet extends HttpServlet {
             }
 
             request.setAttribute("messageList", messageList);
-
+            request.setAttribute("userList", new UserList(selectedUser));
+            
+            //If the request comes without a messageListIndex parameter send the whole profile,
+            //Otherwise send just a segment
             if (messageListIndex.equals("0")) {
                 //Go to profile
                 request.setAttribute("profile", selectedUser);

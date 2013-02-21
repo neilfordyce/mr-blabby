@@ -14,10 +14,6 @@
             <h1>Success</h1>
             <br>
             <h2>You're now friends with <c:out value="${email}"/>.</h2>
-            <ul>
-                <li><a href="register">Register</a></li>
-                <li><a href="passwordReset">Forgotten your password</a></li>
-            </ul>
         </div>
     </body>
 </html>

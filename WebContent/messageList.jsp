@@ -23,6 +23,7 @@
         </div>
         
     <jsp:include page="messageLoader.jsp"/>
+    <jsp:include page="messageDelete.jsp"/>
     
     </body>
 </html>

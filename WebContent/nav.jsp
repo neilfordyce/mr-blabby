@@ -3,11 +3,11 @@
 <div class="nav">
 
     <ul class="nav">
-        <li><a href="/MrBlabby/followers">Followers</a></li>
-        <li><a href="/MrBlabby/following">Following</a></li>
+        <li><a href="${pageContext.request.contextPath}/profile">Profile</a></li>
+        <li><a href="${pageContext.request.contextPath}/message">Messages</a></li>
 
         <li>
-            <form class="search" action="search" method="post">
+            <form class="search" action="${pageContext.request.contextPath}/search" method="post">
                 <input class="search" name="search" type="search" placeholder="search...">
                 <input class="search" type="submit" value="">
             </form>

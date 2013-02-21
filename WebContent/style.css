@@ -17,15 +17,25 @@ textarea {
     padding:2px;
 } 
 
-.profile-friends{
-    float:left;
+.left-module{
     width:45%;
 }
 
 
-.profile-messages{
+.right-module{
     float:right;
     width:45%;
+}
+
+#friend-button{
+    background-image: linear-gradient(#ffffff, #f0f0f0);
+    font-weight: lighter;
+    font-size: 16px;
+    border-bottom: 0;
+    border: 0;
+    border-radius: 0;
+    width: auto;
+    margin-left: 0;
 }
 
 .menu {
@@ -55,7 +65,7 @@ textarea {
 }
 
 .message{
-
+    
 }
 
 .sender{

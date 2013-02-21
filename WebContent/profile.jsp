@@ -20,33 +20,32 @@
             <h1>Profile</h1>
             <h2><c:out value="${profile.firstname} ${profile.lastname}"></c:out></h2>
 
-            <div class="profile-messages messages" id="messages">
+            <c:if test="${friendable}">
+                <form action="${pageContext.request.contextPath}/friend/${profile.email}" method="post">
+                    <input type="submit" id="friend-button" value="Add ${profile.firstname} as a friend">     
+                </form>
+            </c:if>
+            
+            <br>
+            
+            <div class="right-module messages" id="messages">
                 <h2>Messages</h2>
                 <jsp:include page="/messageFragment.jsp"/>
             </div>
-            
 
-            <form action="message" method="post" class="messages profile-friends">
+
+            <form action="message" method="post" class="messages left-module">
                 <h2>Create Post</h2>
                 <textarea class="message" id="message" name="message" placeholder="w'azzzzzup..." maxlength="141" required rows="4" cols="43"></textarea>
                 <span id="counter"></span>
                 <br>
                 <input type="submit" name="submit" value="Post"/>
             </form>
-             
-            
-            <br>
-            <c:if test="${friendable}">
-                <a href="<c:url value="/friend/${profile.email}"></c:url>">Add ${profile.firstname} as a friend</a>      
-            </c:if>
-            <br>
 
-            <div class="profile-friends messages" id="friends">
-                <h2>Friends</h2>
+            <div class="left-module messages" id="friends">
+                <h2>Following</h2>
                 <jsp:include page="/friendFragment.jsp"/>
             </div>
-            
-
         </div>
 
         <script>
@@ -63,8 +62,9 @@
                 $(message).keyup(updateCounter);
             });
         </script>
-        
+
         <jsp:include page="messageLoader.jsp"/>
+        <jsp:include page="messageDelete.jsp"/>
     </body>
 </html>
 
