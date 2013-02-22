@@ -13,7 +13,7 @@
         <div class="container">
             <h1>Success</h1>
             <br>
-            <h2>You're now friends with <c:out value="${email}"/>.</h2>
+            <h2>You're now following <c:out value="${email}"/>.</h2>
         </div>
     </body>
 </html>

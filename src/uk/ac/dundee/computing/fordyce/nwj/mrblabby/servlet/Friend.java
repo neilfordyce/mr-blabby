@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.FriendService;
 
 /**
  *
@@ -33,7 +34,6 @@ public class Friend extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //doPost(request, response);
-
     }
 
     /**
@@ -41,7 +41,7 @@ public class Friend extends HttpServlet {
      * <code>POST</code> method.
      *
      * Adds friends
-     * 
+     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -50,25 +50,47 @@ public class Friend extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         User user = (User) request.getSession().getAttribute("user");
-        
-        if(user == null){
+
+        if (user == null) {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-            
+
         String friendID = request.getPathInfo();
 
         friendID = MessageList.cleanParameter(friendID);
         request.setAttribute("email", friendID);
-        
+
         if (user.setFriend(friendID)) {
             request.getRequestDispatcher("/friendSuccess.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/userNotFound.jsp").forward(request, response);
-            
+
             //        .getFriendList();
         }
+    }
+
+    /**
+     * Removes a friendship between the current user and the user with the email
+     * passed in the url
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        
+        String pathInfo = request.getPathInfo();
+        pathInfo = MessageList.cleanParameter(pathInfo);
+        
+        User user = (User) request.getSession().getAttribute("user");
+        
+        FriendService fs = new FriendService();
+        fs.deleteFriend(user.getEmail(), pathInfo);
     }
 }

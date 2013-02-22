@@ -99,4 +99,36 @@ public class FriendService extends DatabaseConnector {
 
         return friendList;
     }
+    
+    /**
+     * Removes a friendship between two users
+     * 
+     * @param user who is trying to delete their friend
+     * @param friend who is being deleted
+     * @return true if the friendship no longer exists, false otherwise
+     */
+    public boolean deleteFriend(String userEmail, String friendEmail){
+        
+         try {
+            connect = getConnection();
+            
+            CallableStatement cs = connect.prepareCall("{ ? = call delete_friend(?, ?)}");
+            cs.registerOutParameter(1, java.sql.Types.BOOLEAN);
+            cs.setString(2, userEmail);
+            cs.setString(3, friendEmail);
+            cs.executeQuery();
+            
+        } catch (SQLException e) {
+            System.err.println("Database connection unavailable to create message: " + e.toString());
+            return false;
+        } finally{
+            try {
+                connect.close();    
+            } catch (SQLException ex) {
+                Logger.getLogger(FriendService.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        return true;
+    }
 }

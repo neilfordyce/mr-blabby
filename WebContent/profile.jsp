@@ -20,21 +20,26 @@
             <h1>Profile</h1>
             <h2><c:out value="${profile.firstname} ${profile.lastname}"></c:out></h2>
 
-            <c:if test="${friendable}">
-                <form action="${pageContext.request.contextPath}/friend/${profile.email}" method="post">
-                    <input type="submit" id="friend-button" value="Follow ${profile.firstname}">     
-                </form>
-            </c:if>
-            
+            <c:choose>
+                <c:when test="${friendable}">
+                    <form action="${pageContext.request.contextPath}/friend/${profile.email}" method="post">
+                        <input type="submit" id="friend-button" value="Follow ${profile.firstname}">    
+                    </form>
+                </c:when>
+                <c:otherwise>                    
+                    <input type="submit" id="friend-button" onclick="deleteFriend('${profile.email}')" value="Unfollow ${profile.firstname}">
+                </c:otherwise>
+            </c:choose>
+
             <br>
-            
+
             <div class="right-module messages" id="messages">
                 <h2>Messages</h2>
                 <jsp:include page="/messageFragment.jsp"/>
             </div>
 
 
-            <form action="message" method="post" class="messages left-module">
+            <form action="/MrBlabby/message" method="post" class="messages left-module">
                 <h2>Create Post</h2>
                 <textarea class="message" id="message" name="message" placeholder="w'azzzzzup..." maxlength="141" required rows="4" cols="43"></textarea>
                 <span id="counter"></span>
@@ -65,6 +70,7 @@
 
         <jsp:include page="messageLoader.jsp"/>
         <jsp:include page="messageDelete.jsp"/>
+        <jsp:include page="friendDelete.jsp"/>
     </body>
 </html>
 
