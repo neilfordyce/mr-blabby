@@ -10,6 +10,9 @@
             url:"${pageContext.request.contextPath}/message/" + deleteID,
             type:"DELETE",
             cache:false
+        }).done(function() {
+            //when completed refresh so deletion can be seen
+            document.location.reload(true);
         });
     }
     

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
+package uk.ac.dundee.computing.fordyce.nwj.mrblabby.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -19,7 +19,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.UserList;
  * @author Neil
  */
 @WebServlet(urlPatterns = {"/search", "/search/*"})
-public class SearchServlet extends HttpServlet {
+public class Search extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -1,4 +1,4 @@
-package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
+package uk.ac.dundee.computing.fordyce.nwj.mrblabby.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,7 +18,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.UserService;
  * @author Neil
  */
 @WebServlet(urlPatterns = {"/login", "/login/*"})
-public class LoginServlet extends HttpServlet {
+public class Login extends HttpServlet {
 
     /**
      * Handles the HTTP
@@ -62,7 +62,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect("/MrBlabby/profile");
 
         } catch (LoginException | SQLException ex) {
-            Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             doGet(request, response);
         }
     }

@@ -177,14 +177,19 @@ public class MessageList implements Serializable {
     /**
      * Removes / prefix from parameter
      *
+     * Removes /json suffix
+     * 
      * @param idParameter
-     * @return idParameter with / removed
+     * @return idParameter with / and /json removed
      */
     public static String cleanParameter(String idParameter) {
         if (idParameter == null) {
             return "";
         }
 
+        if(idParameter.endsWith("/json"))
+            idParameter = idParameter.replaceAll("[/json$]", "");
+        
         return idParameter.replaceAll("[/]", "");
     }
 

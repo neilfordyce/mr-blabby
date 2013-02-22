@@ -1,4 +1,4 @@
-package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
+package uk.ac.dundee.computing.fordyce.nwj.mrblabby.servlet;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -17,7 +17,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.UserNotFoundExcepti
  * @author Neil
  */
 @WebServlet(urlPatterns = {"/update/profile", "/update/profile/*"})
-public class UpdateProfileServlet extends HttpServlet {
+public class UpdateProfile extends HttpServlet {
 
     /**
      * Handles the HTTP
@@ -66,7 +66,7 @@ public class UpdateProfileServlet extends HttpServlet {
             //update user attribute for session
             request.getSession().setAttribute("user", new User(email));
         } catch (UserNotFoundException ex) {
-            Logger.getLogger(UpdateProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UpdateProfile.class.getName()).log(Level.SEVERE, null, ex);
         }
         doGet(request, response);
 

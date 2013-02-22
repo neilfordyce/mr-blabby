@@ -1,4 +1,4 @@
-package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
+package uk.ac.dundee.computing.fordyce.nwj.mrblabby.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -13,7 +13,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.EmailExistsExceptio
  * Servlet implementation class RegisterServlet
  */
 @WebServlet(urlPatterns = {"/register", "/register/*"})
-public class RegisterServlet extends HttpServlet {
+public class Register extends HttpServlet {
 
     /*
      * Show the register.jsp page

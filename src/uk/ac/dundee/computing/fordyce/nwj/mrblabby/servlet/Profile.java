@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package uk.ac.dundee.computing.fordyce.nwj.mrblabby;
+package uk.ac.dundee.computing.fordyce.nwj.mrblabby.servlet;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -22,7 +22,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.UserNotFoundExcepti
  * @author Neil
  */
 @WebServlet(urlPatterns = {"/profile", "/profile/*"})
-public class ProfileServlet extends HttpServlet {
+public class Profile extends HttpServlet {
 
     /**
      * Handles the HTTP
@@ -53,7 +53,7 @@ public class ProfileServlet extends HttpServlet {
             try {
                 selectedUser = new User(emailParameter);
             } catch (UserNotFoundException ex) {
-                Logger.getLogger(ProfileServlet.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             /* Find out if the user whos page was requested can be addedas a friend 
