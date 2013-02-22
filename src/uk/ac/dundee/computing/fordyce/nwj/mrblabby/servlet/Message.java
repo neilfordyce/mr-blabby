@@ -55,18 +55,18 @@ public class Message extends HttpServlet {
             //Get message list based on path info and index parameter
             MessageList messageList = MessageList.getMessageListInstance(request.getPathInfo(), messageListIndex);
 
+            //Handle json request
+            if (isJson(request)) {
+                request.setAttribute("data", messageList);
+                request.getRequestDispatcher("/json").forward(request, response);
+                return;
+            }
+
             //Decide which page to forward to based on contents of message list
             if (messageList == null || messageList.getMessage().isEmpty()) {
                 request.getRequestDispatcher("/messageNotFound.jsp").forward(request, response);
             } else {
 
-                //Handle json request
-                if(isJson(request)){
-                    request.setAttribute("data", messageList);
-                    request.getRequestDispatcher("/json").forward(request, response);
-                    return;
-                }
-                
                 request.setAttribute("messageList", messageList);
 
                 //When the request comes from ajax it is only necessary to send a part of a message list
@@ -140,13 +140,15 @@ public class Message extends HttpServlet {
 
     /**
      * Finds out if a request object specifies a JSON request
+     *
      * @param pathInfo
-     * @return 
+     * @return
      */
     public static boolean isJson(HttpServletRequest request) {
-        if(request.getPathInfo() == null)
+        if (request.getPathInfo() == null) {
             return false;
-        
+        }
+
         return (request.getPathInfo().endsWith("/json"));
     }
 }

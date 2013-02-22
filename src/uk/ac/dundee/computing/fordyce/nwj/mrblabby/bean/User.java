@@ -88,10 +88,6 @@ public class User implements Serializable {
     public boolean isFriend(String email) {
         email = MessageList.cleanParameter(email); //Remove any / prefix
 
-        //Check this user's email
-        if (this.email.equals(email)) {
-            return true;
-        }
 
         //Check each of the friends
         for (User friend : getFriendList()) {

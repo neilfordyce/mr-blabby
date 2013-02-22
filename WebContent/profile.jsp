@@ -22,7 +22,7 @@
 
             <c:if test="${friendable}">
                 <form action="${pageContext.request.contextPath}/friend/${profile.email}" method="post">
-                    <input type="submit" id="friend-button" value="Add ${profile.firstname} as a friend">     
+                    <input type="submit" id="friend-button" value="Follow ${profile.firstname}">     
                 </form>
             </c:if>
             

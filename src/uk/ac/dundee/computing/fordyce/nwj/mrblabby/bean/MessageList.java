@@ -187,8 +187,9 @@ public class MessageList implements Serializable {
             return "";
         }
 
-        if(idParameter.endsWith("/json"))
-            idParameter = idParameter.replaceAll("[/json$]", "");
+        if(idParameter.endsWith("/json")){
+            idParameter = idParameter.replaceAll("/json$", "");
+        }
         
         return idParameter.replaceAll("[/]", "");
     }

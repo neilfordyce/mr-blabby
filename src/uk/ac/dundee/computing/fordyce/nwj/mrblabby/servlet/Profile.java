@@ -56,7 +56,7 @@ public class Profile extends HttpServlet {
                 Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            /* Find out if the user whos page was requested can be addedas a friend 
+            /* Find out if the user whos page was requested can be added as a friend 
              * by the currentUser */
             User currentUser = (User) request.getSession().getAttribute("user");
             request.setAttribute("friendable", !currentUser.isFriend(selectedUser.getEmail()));
