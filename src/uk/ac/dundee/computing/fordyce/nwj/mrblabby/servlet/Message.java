@@ -112,6 +112,14 @@ public class Message extends HttpServlet {
         request.getRequestDispatcher("").forward(request, response);
     }
 
+    /**
+     * Deletes a message by fulfilling an HTTP DELETE request
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

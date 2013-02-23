@@ -1,7 +1,6 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean;
 
 import java.io.Serializable;
-import java.util.LinkedList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.FriendService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.MessageService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.UserService;

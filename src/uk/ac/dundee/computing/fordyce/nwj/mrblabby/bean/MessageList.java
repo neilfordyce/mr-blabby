@@ -13,12 +13,17 @@ public class MessageList implements Serializable {
 
     private LinkedList<Message> message = new LinkedList<>();
     private int startMessageIndex = 0;
-    private int querySize = 0;
-    private static final int MAX_MESSAGES = 10;
+    private int querySize = 0;  //Stores the total size of the database resultset
+    private static final int MAX_MESSAGES = 10; //The maximum size of this fragment of the resultset
 
     public MessageList() {
+    
     }
-
+    
+    /**
+     * Message list containing a specific message
+     * @param messageID of the message
+     */
     public MessageList(String messageID) {
         this.startMessageIndex = 0;
         MessageService ms = new MessageService();
@@ -27,6 +32,10 @@ public class MessageList implements Serializable {
         querySize = 1;
     }
 
+    /**
+     * All messages, no user filter
+     * @param startMessage 
+     */
     public MessageList(int startMessage) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();
@@ -35,6 +44,11 @@ public class MessageList implements Serializable {
         querySize = messageList.getQuerySize();
     }
 
+    /**
+     * Messages of a particular user
+     * @param user
+     * @param startMessage 
+     */
     public MessageList(User user, int startMessage) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();
@@ -43,6 +57,11 @@ public class MessageList implements Serializable {
         querySize = messageList.getQuerySize();
     }
 
+    /**
+     * Messages of a particular user
+     * @param user
+     * @param startMessage 
+     */
     public MessageList(String user, int startMessage) {
         this.startMessageIndex = startMessage;
         MessageService ms = new MessageService();

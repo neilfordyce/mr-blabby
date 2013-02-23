@@ -37,7 +37,7 @@ public class FriendService extends DatabaseConnector {
             cs.registerOutParameter(1, java.sql.Types.BOOLEAN);
             cs.setString(2, userEmail);
             cs.setString(3, friendEmail);
-            cs.executeQuery();
+            cs.execute();
 
         } catch (SQLException e) {
             System.err.println("Database connection unavailable to create message: " + e.toString());

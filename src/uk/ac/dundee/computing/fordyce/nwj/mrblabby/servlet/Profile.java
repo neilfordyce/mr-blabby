@@ -55,7 +55,6 @@ public class Profile extends HttpServlet {
 
             //Try to get a user for the requested profile 
             String emailParameter = request.getPathInfo();
-
             try {
                 selectedUser = new User(emailParameter);
             } catch (UserNotFoundException ex) {
@@ -76,30 +75,44 @@ public class Profile extends HttpServlet {
                 messageList = MessageList.getMessageListInstance(emailParameter, messageListIndex);
             }
 
-            //UserList userList = new UserList(selectedUser);
             UserList userList = new UserList(selectedUser, Integer.parseInt(userListIndex));
 
+            //If it's a json request
             if (Utility.isJson(request)) {
-                Object[] obj = {messageList, userList};
-                request.setAttribute("data", obj);
-                request.getRequestDispatcher("/json").forward(request, response);
-                return;
-            }
+                handleJson(messageList, userList, request, response);
+            } else {
 
-            request.setAttribute("messageList", messageList);
-            request.setAttribute("userList", userList);
+                request.setAttribute("messageList", messageList);
+                request.setAttribute("userList", userList);
 
-            //If the request comes without a messageListIndex parameter send the whole profile,
-            //Otherwise send just a segment
-            if (messageListIndex.equals("0") && userListIndex.equals("0")) {
-                //Go to profile
-                request.setAttribute("profile", selectedUser);
-                request.getRequestDispatcher("/profile.jsp").forward(request, response);
-            } else if (!messageListIndex.equals("0")) {
-                request.getRequestDispatcher("/messageFragment.jsp").forward(request, response);
-            } else if (!userListIndex.equals("0")) {
-                request.getRequestDispatcher("/friendFragment.jsp").forward(request, response);
+                //If the request comes without a messageListIndex parameter send the whole profile,
+                //Otherwise send just a segment
+                if (messageListIndex.equals("0") && userListIndex.equals("0")) {
+                    //Go to profile
+                    request.setAttribute("profile", selectedUser);
+                    request.getRequestDispatcher("/profile.jsp").forward(request, response);
+                } else if (!messageListIndex.equals("0")) {
+                    request.getRequestDispatcher("/messageFragment.jsp").forward(request, response);
+                } else if (!userListIndex.equals("0")) {
+                    request.getRequestDispatcher("/friendFragment.jsp").forward(request, response);
+                }
             }
         }
+    }
+
+    /**
+     * Passes lists to /json servlet
+     *
+     * @param messageList
+     * @param userList
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void handleJson(MessageList messageList, UserList userList, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Object[] obj = {messageList, userList};
+        request.setAttribute("data", obj);
+        request.getRequestDispatcher("/json").forward(request, response);
     }
 }

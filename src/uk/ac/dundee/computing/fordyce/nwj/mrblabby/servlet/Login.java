@@ -32,10 +32,12 @@ public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Go to profile if already logged in
-        if(request.getSession().getAttribute("user") == null)
+        if(request.getSession().getAttribute("user") == null) {
             request.getRequestDispatcher("/login.jsp").forward(request, response);
-        else
+        }
+        else {
             response.sendRedirect(request.getContextPath() + "/profile");
+        }
     }
 
     /**
