@@ -6,6 +6,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.FriendService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.MessageService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.UserService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.UserNotFoundException;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.utility.Utility;
 
 /**
  *
@@ -23,7 +24,7 @@ public class User implements Serializable {
     public User(String email) throws UserNotFoundException {
         UserService us = new UserService();
 
-        email = MessageList.cleanParameter(email);
+        email = Utility.cleanParameter(email);
 
         User user = us.getUser(email);
 
@@ -72,7 +73,7 @@ public class User implements Serializable {
     }
 
     public boolean setFriend(String email) {
-        email = MessageList.cleanParameter(email);
+        email = Utility.cleanParameter(email);
         FriendService fs = new FriendService();
         return fs.addFriend(this.email, email);
     }
@@ -85,7 +86,7 @@ public class User implements Serializable {
      * user
      */
     public boolean isFriend(String email) {
-        email = MessageList.cleanParameter(email); //Remove any / prefix
+        email = Utility.cleanParameter(email); //Remove any / prefix
         
   //TODO remove old code      
         //Check each of the friends

@@ -16,6 +16,7 @@ import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.UserList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.exception.UserNotFoundException;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.utility.Utility;
 
 /**
  *
@@ -74,13 +75,20 @@ public class Profile extends HttpServlet {
             } else {
                 messageList = MessageList.getMessageListInstance(emailParameter, messageListIndex);
             }
-            
+
             //UserList userList = new UserList(selectedUser);
             UserList userList = new UserList(selectedUser, Integer.parseInt(userListIndex));
-            
+
+            if (Utility.isJson(request)) {
+                Object[] obj = {messageList, userList};
+                request.setAttribute("data", obj);
+                request.getRequestDispatcher("/json").forward(request, response);
+                return;
+            }
+
             request.setAttribute("messageList", messageList);
             request.setAttribute("userList", userList);
-            
+
             //If the request comes without a messageListIndex parameter send the whole profile,
             //Otherwise send just a segment
             if (messageListIndex.equals("0") && userListIndex.equals("0")) {

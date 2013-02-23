@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.MessageService;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.utility.Utility;
 
 /**
  *
@@ -56,7 +57,7 @@ public class Message extends HttpServlet {
             MessageList messageList = MessageList.getMessageListInstance(request.getPathInfo(), messageListIndex);
 
             //Handle json request
-            if (isJson(request)) {
+            if (Utility.isJson(request)) {
                 request.setAttribute("data", messageList);
                 request.getRequestDispatcher("/json").forward(request, response);
                 return;
@@ -121,7 +122,7 @@ public class Message extends HttpServlet {
          * TODO remove
          * pre-ajax method of deleting messages*/
         //requestParams = requestParams.replaceAll("/delete", "");
-        requestParams = MessageList.cleanParameter(requestParams);
+        requestParams = Utility.cleanParameter(requestParams);
 
         try {
             int messageID = Integer.parseInt(requestParams);
@@ -136,19 +137,5 @@ public class Message extends HttpServlet {
 
         //TODO remove pre-ajax
         //response.sendRedirect(request.getContextPath() + "/message");
-    }
-
-    /**
-     * Finds out if a request object specifies a JSON request
-     *
-     * @param pathInfo
-     * @return
-     */
-    public static boolean isJson(HttpServletRequest request) {
-        if (request.getPathInfo() == null) {
-            return false;
-        }
-
-        return (request.getPathInfo().endsWith("/json"));
     }
 }

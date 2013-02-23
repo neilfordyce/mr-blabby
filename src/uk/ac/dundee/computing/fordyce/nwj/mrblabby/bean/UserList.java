@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.FriendService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.UserService;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.utility.Utility;
 
 /**
  *
@@ -81,7 +82,7 @@ public class UserList implements Serializable {
             startIndex = Integer.parseInt(messageListIndex);
         }
 
-        searchParameter = MessageList.cleanParameter(searchParameter);
+        searchParameter = Utility.cleanParameter(searchParameter);
 
         //Decide which user to put in the list based on idParameter
         if (searchParameter != null && !searchParameter.isEmpty()) {

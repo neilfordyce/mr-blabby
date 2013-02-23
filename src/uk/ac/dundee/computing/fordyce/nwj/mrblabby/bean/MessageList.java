@@ -2,9 +2,8 @@ package uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.MessageService;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.utility.Utility;
 
 /**
  *
@@ -113,14 +112,14 @@ public class MessageList implements Serializable {
 
         //Set up message list
         MessageList messageList;
-        idParameter = cleanParameter(idParameter);
+        idParameter = Utility.cleanParameter(idParameter);
 
         //Decide which messages to put in the list based on idParameter
         if (idParameter != null && !idParameter.isEmpty()) {
 
-            if (isEmail(idParameter)) {
+            if (Utility.isEmail(idParameter)) {
                 messageList = new MessageList(idParameter, startIndex); //get messages of a particular user
-            } else if (isNumeric(idParameter)) {
+            } else if (Utility.isNumeric(idParameter)) {
                 messageList = new MessageList(idParameter);             //get message with a particular id
             } else {
                 messageList = ms.search(idParameter, startIndex, MAX_MESSAGES); //get messages containing search term
@@ -154,57 +153,5 @@ public class MessageList implements Serializable {
         messageList = ms.getFriendsMessageList(user, startIndex, MAX_MESSAGES);
         
         return messageList;
-    }
-
-    /**
-     * Checks if an email address is valid Based on answer from
-     * http://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
-     *
-     * @return true if email address is valid, false otherwise
-     */
-    private static boolean isEmail(String idParameter) {
-        boolean result = true;
-
-        try {
-            InternetAddress emailAddr = new InternetAddress(idParameter);
-            emailAddr.validate();
-        } catch (AddressException ex) {
-            result = false;
-        }
-        return result;
-    }
-
-    /**
-     * Removes / prefix from parameter
-     *
-     * Removes /json suffix
-     * 
-     * @param idParameter
-     * @return idParameter with / and /json removed
-     */
-    public static String cleanParameter(String idParameter) {
-        if (idParameter == null) {
-            return "";
-        }
-
-        if(idParameter.endsWith("/json")){
-            idParameter = idParameter.replaceAll("/json$", "");
-        }
-        
-        return idParameter.replaceAll("[/]", "");
-    }
-
-    /**
-     * Determines if id is numeric
-     *
-     * @param idParameter
-     * @return true if the id is numeric
-     */
-    private static boolean isNumeric(String idParameter) {
-        if (idParameter == null) {
-            return false;
-        }
-
-        return idParameter.matches("\\d+");
     }
 }

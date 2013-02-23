@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.FriendService;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.utility.Utility;
 
 /**
  *
@@ -60,7 +61,7 @@ public class Friend extends HttpServlet {
 
         String friendID = request.getPathInfo();
 
-        friendID = MessageList.cleanParameter(friendID);
+        friendID = Utility.cleanParameter(friendID);
         request.setAttribute("email", friendID);
 
         if (user.setFriend(friendID)) {
@@ -84,7 +85,7 @@ public class Friend extends HttpServlet {
             throws ServletException, IOException {
         
         String pathInfo = request.getPathInfo();
-        pathInfo = MessageList.cleanParameter(pathInfo);
+        pathInfo = Utility.cleanParameter(pathInfo);
         
         User user = (User) request.getSession().getAttribute("user");
         
