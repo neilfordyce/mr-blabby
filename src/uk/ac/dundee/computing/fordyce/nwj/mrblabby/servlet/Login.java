@@ -65,6 +65,7 @@ public class Login extends HttpServlet {
 
         } catch (LoginException | SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("loginRetry", true);
             doGet(request, response);
         }
     }

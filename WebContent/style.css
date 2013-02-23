@@ -12,9 +12,16 @@ body {
     background-color: #C0DEED;
 }
 
+.logo{
+    font-family: fantasy;
+    font-size: 20px;
+}
+
 textarea {
+    margin: 0px auto;
     resize:none;
-    padding:2px;
+    padding:4px;
+    font: 300 16px Helvetica,Helvetica Neue,Arial;
 } 
 
 .left-module{
@@ -74,7 +81,13 @@ textarea {
 }
 
 .message{
-    
+    /*Word wrapping advice from
+    http://stackoverflow.com/questions/1638223/is-there-a-way-to-word-wrap-text-in-a-div*/
+    white-space: pre-wrap;      /* CSS3 */   
+    white-space: -moz-pre-wrap; /* Firefox */    
+    white-space: -pre-wrap;     /* Opera <7 */   
+    white-space: -o-pre-wrap;   /* Opera 7 */    
+    word-wrap: break-word;      /* IE */
 }
 
 .sender{
@@ -113,6 +126,7 @@ textarea {
 }
 
 .nav {
+    background-color: #f9f9f9;
     background-image: linear-gradient(#f9f9f9, #f3f3f3);
     background-repeat: repeat-x;
     position: relative;

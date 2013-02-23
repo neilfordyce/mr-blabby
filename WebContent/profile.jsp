@@ -38,17 +38,17 @@
                 <jsp:include page="/messageFragment.jsp"/>
             </div>
 
-
             <form action="/MrBlabby/message" method="post" class="messages left-module">
                 <h2>Create Post</h2>
-                <textarea class="message" id="message" name="message" placeholder="w'azzzzzup..." maxlength="141" required rows="4" cols="43"></textarea>
+                <textarea class="message" id="message" name="message" placeholder="What's the craic ${user.firstname}..." maxlength="141" required rows="3" cols="44"></textarea>
                 <span id="counter"></span>
                 <br>
                 <input type="submit" name="submit" value="Post"/>
             </form>
 
             <div class="left-module messages" id="friends">
-                <h2>Following</h2>
+                <h2><c:if test="${profile.email != user.email}">${profile.firstname}'s</c:if>
+                    Following</h2>
                 <jsp:include page="/friendFragment.jsp"/>
             </div>
         </div>

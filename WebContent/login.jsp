@@ -8,13 +8,19 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <jsp:include page="style.jsp"/>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Login</title>
     </head>
     <body>
         <div class="container">
-            <h1>Login</h1>
+            <h1>Login
+
+            <c:if test="${loginRetry}">
+                incorrect
+            </c:if></h1>
+            
             <div class="glass">
                 <form action="login" method="post">
                     <label for="email">Email</label>
