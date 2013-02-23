@@ -61,7 +61,7 @@ public class Login extends HttpServlet {
         try {
             User user = login.getUserLogin(email, password);
             request.getSession().setAttribute("user", user);
-            response.sendRedirect("/MrBlabby/profile");
+            response.sendRedirect(request.getContextPath() + "/profile");
 
         } catch (LoginException | SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);

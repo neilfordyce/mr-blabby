@@ -39,7 +39,7 @@ public class Message extends HttpServlet {
 
         //Login check
         if ((User) request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/MrBlabby/login");
+            response.sendRedirect(request.getContextPath() + "/login");
         } else {
 
             /*

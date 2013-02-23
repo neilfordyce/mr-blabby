@@ -31,7 +31,7 @@ public class UpdateProfile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/MrBlabby/login");
+            response.sendRedirect(request.getContextPath() + "/login");
         } else {
             request.getRequestDispatcher("/updateProfile.jsp").forward(request, response);
         }

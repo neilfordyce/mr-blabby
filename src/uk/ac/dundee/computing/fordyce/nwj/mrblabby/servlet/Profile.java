@@ -37,7 +37,7 @@ public class Profile extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/MrBlabby/login");
+            response.sendRedirect(request.getContextPath() + "/login");
         } else {
 
             //Default list indexes to 0, but let a parameter override it if it exists
