@@ -3,7 +3,7 @@
      * Ajax script to get more messages when within 200 pixels of the bottom
      */
     $(document).ready(function(){
-        var startMessageIndex = 0;
+        var startUserIndex = 0;
         var requestInProgress = false;  //make sure many requests aren't made while waiting for page to resize
 
         $(window).scroll(function(){  //when scrolling
@@ -13,19 +13,19 @@
                 && requestInProgress != true){
                         
                 requestInProgress = true;
-                startMessageIndex += ${messageList.size};  //Get next batch of messages
+                startUserIndex += ${userList.size};  //Get next batch of users
                         
                 //Only make the request if there are more messages to get
-                if(${messageList.querySize} > startMessageIndex){
+                if(${userList.querySize} > startUserIndex){
                             
                     $.ajax({
                         cache:false,
-                        data:{messageListIndex:startMessageIndex},
+                        data:{userListIndex:startUserIndex},
                         error:function(xhr, ajaxOptions){
                             alert(xhr.status + " :: " + xhr.statusText);
                         } 
                     }).done(function( html ) {
-                        $("#messages").append(html);
+                        $("#friends").append(html);
                         requestInProgress = false;
                     });
                 }

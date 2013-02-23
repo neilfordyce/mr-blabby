@@ -67,9 +67,8 @@ public class User implements Serializable {
         this.lastname = lastname;
     }
 
-    public LinkedList<User> getFriendList() {
-        FriendService fs = new FriendService();
-        return fs.getFriendList(this);
+    public UserList getFriendList(int startIndex) {
+        return new UserList(this, startIndex);
     }
 
     public boolean setFriend(String email) {
@@ -87,17 +86,19 @@ public class User implements Serializable {
      */
     public boolean isFriend(String email) {
         email = MessageList.cleanParameter(email); //Remove any / prefix
-
-
+        
+  //TODO remove old code      
         //Check each of the friends
-        for (User friend : getFriendList()) {
-            if (friend.getEmail().equals(email)) {
-                return true;
-            }
-        }
+        //for (User friend : getFriendList().getUsers()) {
+          //  if (friend.getEmail().equals(email)) {
+            //    return true;
+            //}
+//        }
 
         //Can't be true, so
-        return false;
+        
+        FriendService fs = new FriendService();
+        return fs.isFriend(this.email, email);
     }
 
     /**

@@ -39,9 +39,14 @@ public class Profile extends HttpServlet {
             response.sendRedirect("/MrBlabby/login");
         } else {
 
+            //Default list indexes to 0, but let a parameter override it if it exists
             String messageListIndex = "0";
+            String userListIndex = "0";
             if (request.getParameter("messageListIndex") != null) {
                 messageListIndex = request.getParameter("messageListIndex");
+            }
+            if (request.getParameter("userListIndex") != null) {
+                userListIndex = request.getParameter("userListIndex");
             }
 
             //Default selected user profile is same as the session user
@@ -69,18 +74,23 @@ public class Profile extends HttpServlet {
             } else {
                 messageList = MessageList.getMessageListInstance(emailParameter, messageListIndex);
             }
-
+            
+            //UserList userList = new UserList(selectedUser);
+            UserList userList = new UserList(selectedUser, Integer.parseInt(userListIndex));
+            
             request.setAttribute("messageList", messageList);
-            request.setAttribute("userList", new UserList(selectedUser));
+            request.setAttribute("userList", userList);
             
             //If the request comes without a messageListIndex parameter send the whole profile,
             //Otherwise send just a segment
-            if (messageListIndex.equals("0")) {
+            if (messageListIndex.equals("0") && userListIndex.equals("0")) {
                 //Go to profile
                 request.setAttribute("profile", selectedUser);
                 request.getRequestDispatcher("/profile.jsp").forward(request, response);
-            } else {
+            } else if (!messageListIndex.equals("0")) {
                 request.getRequestDispatcher("/messageFragment.jsp").forward(request, response);
+            } else if (!userListIndex.equals("0")) {
+                request.getRequestDispatcher("/friendFragment.jsp").forward(request, response);
             }
         }
     }

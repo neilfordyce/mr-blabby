@@ -10,7 +10,8 @@
             cache:false
         }).done(function() {
             //when completed refresh so deletion can be seen
-            location.reload();
+            location.reload(true);
+            window.scrollBy(0,window.pageYOffset);
         });
     }
     

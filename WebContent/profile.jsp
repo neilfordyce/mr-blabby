@@ -69,6 +69,7 @@
         </script>
 
         <jsp:include page="messageLoader.jsp"/>
+        <jsp:include page="friendLoader.jsp"/>
         <jsp:include page="messageDelete.jsp"/>
         <jsp:include page="friendDelete.jsp"/>
     </body>

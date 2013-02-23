@@ -67,8 +67,6 @@ public class Friend extends HttpServlet {
             request.getRequestDispatcher("/friendSuccess.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("/userNotFound.jsp").forward(request, response);
-
-            //        .getFriendList();
         }
     }
 

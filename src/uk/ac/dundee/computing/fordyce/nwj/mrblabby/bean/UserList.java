@@ -6,6 +6,7 @@ package uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.FriendService;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice.UserService;
 
 /**
@@ -16,7 +17,7 @@ public class UserList implements Serializable {
 
     private LinkedList<User> users = new LinkedList<>();
     private int querySize;
-    private static final int MAX_USERS = 10;
+    private static final int MAX_USERS = 8;
 
     public UserList() {
     }
@@ -24,10 +25,14 @@ public class UserList implements Serializable {
     /**
      * Constructs a UserList with the friends of the input user
      * 
-     * @param userWithFriends 
+     * @param user who has friends to be added to this list
+     * @param startIndex to start off from
      */
-    public UserList(User userWithFriends){
-        users = userWithFriends.getFriendList();
+    public UserList(User user, int startIndex){
+        FriendService fs = new FriendService();
+        UserList userList = fs.getFriendList(user, startIndex, MAX_USERS);
+        users = userList.users;
+        querySize = userList.querySize;
     }
 
     public LinkedList<User> getUsers() {
@@ -49,7 +54,15 @@ public class UserList implements Serializable {
     public void setQuerySize(int querySize) {
         this.querySize = querySize;
     }
-
+    
+    /**
+     * 
+     * @return size of internal linked list
+     */
+    public int getSize(){
+        return users.size();
+    }
+    
     /**
      * Create a list of users from a search term
      *
