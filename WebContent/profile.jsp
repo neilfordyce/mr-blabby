@@ -26,21 +26,24 @@
                         <input type="submit" id="friend-button" value="Follow ${profile.firstname}">    
                     </form>
                 </c:when>
-                <c:otherwise>                    
+                <c:otherwise> 
+                    <div>
                     <input type="submit" id="friend-button" onclick="deleteFriend('${profile.email}')" value="Unfollow ${profile.firstname}">
+                    </div>
                 </c:otherwise>
             </c:choose>
 
             <br>
 
             <div class="right-module messages" id="messages">
-                <h2>Messages</h2>
+                <h2><c:if test="${profile.email != user.email}">${profile.firstname}'s</c:if> 
+                    Messages</h2>
                 <jsp:include page="/messageFragment.jsp"/>
             </div>
 
-            <form action="/MrBlabby/message" method="post" class="messages left-module">
+            <form action="${pageContext.request.contextPath}/message" method="post" class="messages left-module">
                 <h2>Create Post</h2>
-                <textarea class="message" id="message" name="message" placeholder="What's the craic ${user.firstname}..." maxlength="141" required rows="3" cols="44"></textarea>
+                <textarea class="message" id="message" name="message" placeholder="What's the craic ${user.firstname}..." maxlength="141" required rows="3"></textarea>
                 <span id="counter"></span>
                 <br>
                 <input type="submit" name="submit" value="Post"/>

@@ -1,16 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.UserList;
 
@@ -43,11 +36,7 @@ public class FriendService extends DatabaseConnector {
             System.err.println("Database connection unavailable to create message: " + e.toString());
             return false;
         } finally {
-            try {
-                connect.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(FriendService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            closeConnection();
         }
 
         return true;
@@ -90,7 +79,9 @@ public class FriendService extends DatabaseConnector {
         } catch (SQLException e) {
             System.err.println("Database connection unavailable to create message: " + e.toString());
             return false;
-        } 
+        } finally {
+            closeConnection();
+        }
     }
 
     /**
@@ -135,6 +126,8 @@ public class FriendService extends DatabaseConnector {
 
         } catch (SQLException e) {
             System.err.println("Database connection unavailable to create message: " + e.toString());
+        } finally{
+            closeConnection();
         }
 
         return friendList;
@@ -162,11 +155,7 @@ public class FriendService extends DatabaseConnector {
             System.err.println("Database connection unavailable to create message: " + e.toString());
             return false;
         } finally {
-            try {
-                connect.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(FriendService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            closeConnection();
         }
 
         return true;

@@ -25,10 +25,11 @@ public class RegisterService extends DatabaseConnector {
             proc.setString(4, firstname);
             proc.setString(5, lastname);
             proc.execute();
-            connect.close();
         } catch (SQLException e) {
             System.err.println("Database connection unavailable: " + e.toString());
             return false;
+        } finally {
+            closeConnection();
         }
 
         return true;
@@ -51,6 +52,8 @@ public class RegisterService extends DatabaseConnector {
             return proc.getBoolean(1);
         } catch (SQLException e) {
             System.err.println("Database connection unavailable: " + e.toString());
+        } finally {
+            closeConnection();
         }
 
         return false;
@@ -75,10 +78,11 @@ public class RegisterService extends DatabaseConnector {
             proc.setString(4, firstname);
             proc.setString(5, lastname);
             proc.execute();
-            connect.close();
         } catch (SQLException e) {
             System.err.println("Database connection unavailable: " + e.toString());
             return false;
+        } finally {
+            closeConnection();
         }
 
         return true;

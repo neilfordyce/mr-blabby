@@ -30,9 +30,11 @@ public class MessageService extends DatabaseConnector {
             proc.setString(2, user.getEmail());
             proc.setString(3, message);
             proc.execute();
-            connect.close();
         } catch (SQLException e) {
             System.err.println("Database connection unavailable to get message: " + e.toString());
+        } finally {
+            closeConnection();
+
         }
     }
 
@@ -115,7 +117,6 @@ public class MessageService extends DatabaseConnector {
 
             MessageList messageList = execute(ps, startMessage, maxMessages);
 
-
             return messageList;
         } catch (SQLException e) {
             System.err.println("Database connection unavailable to get message: " + e.toString());
@@ -194,7 +195,7 @@ public class MessageService extends DatabaseConnector {
         querySize += countRemainingResults(rs);
         messageList.setQuerySize(querySize);
 
-        connect.close();
+        closeConnection();
 
         return messageList;
     }
@@ -225,11 +226,7 @@ public class MessageService extends DatabaseConnector {
             System.err.println("Database connection unavailable to delete message: " + e.toString());
             return false;
         } finally {
-            try {
-                connect.close();
-            } catch (SQLException ex) {
-                System.err.println("Unable to close connection: " + ex.toString());
-            }
+            closeConnection();
         }
 
         return true;

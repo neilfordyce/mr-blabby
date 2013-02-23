@@ -1,10 +1,11 @@
 package uk.ac.dundee.computing.fordyce.nwj.mrblabby.dataservice;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -56,29 +57,36 @@ public class DatabaseConnector {
             System.err.println("Error while executing SQL statement" + e.toString());
             return false;
         } finally {
-            try {
-                connect.close();
-            } catch (SQLException e) {
-                System.err.println("Error closing database connection: " + e.toString());
-            }
+            closeConnection();
         }
         return true;
     }
-    
-        /**
-     * Counts the remaining records in a result set so the bean knows how many 
+
+    /**
+     * Counts the remaining records in a result set so the bean knows how many
      * it's missing
-     * 
+     *
      * @param rs with results to count
      * @return number of results which were in the result set
-     * @throws SQLException 
+     * @throws SQLException
      */
     protected int countRemainingResults(ResultSet rs) throws SQLException {
         int querySize = 0;
-                
+
         while (rs.next()) {
             querySize++;
         }
         return querySize;
+    }
+
+    /**
+     * closes any connection open in the connect field
+     */
+    public void closeConnection() {
+        try {
+            connect.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(FriendService.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

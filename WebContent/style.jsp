@@ -1,2 +1,2 @@
-<link rel="stylesheet" type="text/css" href="/MrBlabby/style.css">
-<link rel="shortcut icon" href="/MrBlabby/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico" />

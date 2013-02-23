@@ -27,9 +27,9 @@
 
             <li><div class="menu" id="slider">
                     <span></span>
-                    <a href="/MrBlabby/logout">Logout</a>
+                    <a href="${pageContext.request.contextPath}/logout">Logout</a>
                     <br><a href="${pageContext.request.contextPath}/update/profile">Update Details</a>
-                    <br><a href="/MrBlabby/message/<c:out value="${user.email}"></c:out>">${user.email}</a>
+                    <br><a href="${pageContext.request.contextPath}/message/<c:out value="${user.email}"></c:out>">${user.email}</a>
                 </div>
             </li>
         </div>

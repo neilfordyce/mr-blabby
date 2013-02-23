@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.security.auth.login.LoginException;
-import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.Message;
-import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.MessageList;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.User;
 import uk.ac.dundee.computing.fordyce.nwj.mrblabby.bean.UserList;
 
@@ -38,6 +36,8 @@ public class UserService extends DatabaseConnector {
         } catch (SQLException ex) {
             System.err.println("error authenticating login credentials: " + ex.toString());
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
         }
 
         return false;
@@ -84,9 +84,10 @@ public class UserService extends DatabaseConnector {
             firstname = proc.getString(2);
             lastname = proc.getString(3);
 
-            connect.close();
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            closeConnection();
         }
 
         User user = new User(email, firstname, lastname);
@@ -116,6 +117,8 @@ public class UserService extends DatabaseConnector {
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        } finally {
+            closeConnection();
         }
 
     }
