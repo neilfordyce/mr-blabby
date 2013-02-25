@@ -28,7 +28,7 @@ public class User implements Serializable {
         User user = us.getUser(email);
 
         //Throw an exception if the object cannot be constructed properly
-        if (user.getFirstname() == null || user.getLastname() == null) {
+        if (user == null || user.getFirstname() == null || user.getLastname() == null) {
             throw new UserNotFoundException();
         }
 

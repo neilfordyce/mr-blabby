@@ -86,6 +86,7 @@ public class UserService extends DatabaseConnector {
 
         } catch (SQLException ex) {
             Logger.getLogger(UserService.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         } finally {
             closeConnection();
         }

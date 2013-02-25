@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/MrBlabby">
-  <Resource driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/mr_blabby" password="mini" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/mr_blabby" username="root"/>
+    <Resource driverClassName="com.mysql.jdbc.Driver" maxActive="100" maxIdle="30" maxWait="10000" name="jdbc/mr_blabby" password="ac31004" type="javax.sql.DataSource" url="jdbc:mysql://arlia.computing.dundee.ac.uk/neilfordyce" username="NeilFordyce"/>
 </Context>
